@@ -77,19 +77,19 @@ export default function AdminRewardsPage() {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-7xl mx-auto gap-6 pb-12">
+    <div className="flex flex-col w-full max-w-[1440px] mx-auto gap-6 pb-12">
       {/* 1. Top Operational Header Bar */}
       <div className="flex items-center justify-between pb-4 border-b border-[#E4E4E7]">
         <div className="flex flex-col gap-0.5">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-[#1C1C1E] tracking-tight whitespace-nowrap">
+            <h1 className="text-2xl font-semibold text-[#1C1C1E] tracking-tight whitespace-nowrap">
               Rewards
             </h1>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#1C7C54]/10 text-[#1C7C54] border border-[#1C7C54]/30">
               Program Active
             </span>
           </div>
-          <p className="text-xs text-[#6E6E73]">
+          <p className="text-xs text-[#6E6E73] font-normal">
             Manage loyalty milestones, visit thresholds, and live customer unlock criteria
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function AdminRewardsPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => alert("Filter rules modal")}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-[#E4E4E7] hover:bg-[#F2F2F5] text-[#1C1C1E] text-xs font-semibold transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-[#E4E4E7] hover:bg-[#F2F2F5] text-[#1C1C1E] text-xs font-semibold transition-colors shadow-xs"
             type="button"
           >
             <SlidersHorizontal className="w-4 h-4 text-[#6E6E73]" />
@@ -105,10 +105,10 @@ export default function AdminRewardsPage() {
           </button>
           <button
             onClick={() => alert("New reward creation modal")}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1C7C54] hover:bg-[#16603F] text-white text-xs font-semibold transition-colors shadow-sm whitespace-nowrap"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1C7C54] hover:bg-[#16603F] text-white text-xs font-semibold transition-colors shadow-xs whitespace-nowrap"
             type="button"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 stroke-[3]" />
             <span>New Reward</span>
           </button>
         </div>
@@ -121,7 +121,7 @@ export default function AdminRewardsPage() {
           {/* List Controls */}
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold text-[#1C1C1E]">
+              <span className="text-base font-semibold text-[#1C1C1E]">
                 Active Rewards
               </span>
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-[#E4E4E7] text-xs font-bold text-[#1C1C1E]">
@@ -129,7 +129,7 @@ export default function AdminRewardsPage() {
               </span>
             </div>
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-[#6E6E73] uppercase tracking-wider font-semibold text-[10px]">
+              <span className="text-[#6E6E73] uppercase tracking-wider font-medium text-[10px]">
                 SORT BY
               </span>
               <button
@@ -149,26 +149,28 @@ export default function AdminRewardsPage() {
               <div
                 key={rew.id}
                 onClick={() => handleSelectReward(rew)}
-                className={`group relative bg-white rounded-2xl border p-5 shadow-sm transition-all cursor-pointer ${
+                className={`group relative bg-white rounded-2xl border p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all cursor-pointer ${
                   isSelected
                     ? "border-[#1C7C54] ring-2 ring-[#1C7C54]/20"
                     : "border-[#E4E4E7] hover:border-[#1C7C54]/50"
                 }`}
               >
                 <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-[#F2F2F5] border border-[#E4E4E7] flex-shrink-0">
+                  {/* Separate fixed 64x64px image container from text content to prevent overlap */}
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-[#F8F8FA] border border-[#E4E4E7] flex-shrink-0">
                       <img
                         src={rew.imgUrl}
                         alt={rew.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <div className="flex flex-col min-w-0">
+
+                    <div className="flex flex-col min-w-0 flex-1">
                       <h3 className="text-base font-bold text-[#1C1C1E] truncate">
                         {rew.title}
                       </h3>
-                      <p className="text-xs text-[#6E6E73] mt-0.5">
+                      <p className="text-xs text-[#6E6E73] mt-0.5 font-normal truncate">
                         {rew.reqVisits} visits required • {rew.desc}
                       </p>
                       <div className="flex items-center gap-3 mt-2 text-xs">
@@ -178,7 +180,7 @@ export default function AdminRewardsPage() {
                           redemption rate
                         </span>
                         <span className="text-[#6E6E73]">•</span>
-                        <span className="text-[#6E6E73]">
+                        <span className="text-[#6E6E73] font-normal">
                           {rew.redeemedMonth} redeemed this month
                         </span>
                       </div>
@@ -205,7 +207,7 @@ export default function AdminRewardsPage() {
 
                 {/* Metric micro-strip */}
                 <div className="mt-4 pt-3 border-t border-[#E4E4E7] flex items-center justify-between text-xs text-[#6E6E73]">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 font-normal">
                     <span>
                       Customer pool:{" "}
                       <strong className="font-semibold text-[#1C1C1E]">
@@ -238,18 +240,18 @@ export default function AdminRewardsPage() {
 
         {/* RIGHT COLUMN: Reward Details & Builder Form (5 cols) */}
         <div className="col-span-12 xl:col-span-5 sticky top-20 flex flex-col gap-4">
-          <div className="bg-white rounded-2xl border border-[#E4E4E7] p-6 shadow-sm flex flex-col gap-5">
+          <div className="bg-white rounded-2xl border border-[#E4E4E7] p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col gap-5">
             {/* Form Header */}
             <div className="flex items-center justify-between pb-4 border-b border-[#E4E4E7]">
               <div className="flex flex-col">
-                <h2 className="text-base font-bold text-[#1C1C1E]">
+                <h2 className="text-base font-semibold text-[#1C1C1E]">
                   Reward Details
                 </h2>
-                <span className="text-xs text-[#6E6E73]">
+                <span className="text-xs text-[#6E6E73] font-normal">
                   Editing active reward template
                 </span>
               </div>
-              <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-[#F2F2F5] text-[#1C1C1E] border border-[#E4E4E7]">
+              <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-[#F8F8FA] text-[#1C1C1E] border border-[#E4E4E7]">
                 ID: RWD-709
               </span>
             </div>
@@ -260,7 +262,7 @@ export default function AdminRewardsPage() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="reward-name"
-                  className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73]"
+                  className="text-[11px] font-medium uppercase tracking-wider text-[#6E6E73]"
                 >
                   REWARD NAME
                 </label>
@@ -269,7 +271,7 @@ export default function AdminRewardsPage() {
                   type="text"
                   value={rewardName}
                   onChange={(e) => setRewardName(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-white border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-medium focus:outline-none focus:border-[#1C7C54] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#F8F8FA] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-semibold focus:outline-none focus:border-[#1C7C54] transition-colors"
                 />
               </div>
 
@@ -277,7 +279,7 @@ export default function AdminRewardsPage() {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="reward-desc"
-                  className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73]"
+                  className="text-[11px] font-medium uppercase tracking-wider text-[#6E6E73]"
                 >
                   DESCRIPTION
                 </label>
@@ -286,7 +288,7 @@ export default function AdminRewardsPage() {
                   type="text"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-white border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-medium focus:outline-none focus:border-[#1C7C54] transition-colors"
+                  className="w-full px-3.5 py-2.5 bg-[#F8F8FA] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-medium focus:outline-none focus:border-[#1C7C54] transition-colors"
                 />
               </div>
 
@@ -295,7 +297,7 @@ export default function AdminRewardsPage() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="visits-req"
-                    className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73]"
+                    className="text-[11px] font-medium uppercase tracking-wider text-[#6E6E73]"
                   >
                     VISITS REQUIRED
                   </label>
@@ -305,9 +307,9 @@ export default function AdminRewardsPage() {
                       type="number"
                       value={visitsRequired}
                       onChange={(e) => setVisitsRequired(Number(e.target.value))}
-                      className="w-full pl-3.5 pr-14 py-2 bg-white border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-medium focus:outline-none focus:border-[#1C7C54]"
+                      className="w-full pl-3.5 pr-14 py-2.5 bg-[#F8F8FA] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-bold focus:outline-none focus:border-[#1C7C54]"
                     />
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#6E6E73] pointer-events-none">
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#6E6E73] pointer-events-none font-medium">
                       stamps
                     </span>
                   </div>
@@ -316,7 +318,7 @@ export default function AdminRewardsPage() {
                 <div className="flex flex-col gap-1.5">
                   <label
                     htmlFor="availability"
-                    className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73]"
+                    className="text-[11px] font-medium uppercase tracking-wider text-[#6E6E73]"
                   >
                     AVAILABILITY
                   </label>
@@ -325,7 +327,7 @@ export default function AdminRewardsPage() {
                       id="availability"
                       value={availability}
                       onChange={(e) => setAvailability(e.target.value)}
-                      className="w-full appearance-none pl-3.5 pr-8 py-2 bg-white border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-medium focus:outline-none focus:border-[#1C7C54] cursor-pointer"
+                      className="w-full appearance-none pl-3.5 pr-8 py-2.5 bg-[#F8F8FA] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] font-medium focus:outline-none focus:border-[#1C7C54] cursor-pointer"
                     >
                       <option>30 days after unlock</option>
                       <option>14 days after unlock</option>
@@ -339,12 +341,12 @@ export default function AdminRewardsPage() {
 
               {/* Reward Image Upload Box */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-semibold uppercase tracking-wider text-[#6E6E73]">
+                <label className="text-[11px] font-medium uppercase tracking-wider text-[#6E6E73]">
                   REWARD IMAGE
                 </label>
                 <div
                   onClick={() => alert("Upload image prompt")}
-                  className="border border-dashed border-[#E4E4E7] rounded-2xl p-3 flex items-center justify-between bg-[#F2F2F5] hover:bg-[#E4E4E7]/60 transition-colors cursor-pointer group"
+                  className="border border-dashed border-[#E4E4E7] rounded-2xl p-3 flex items-center justify-between bg-[#F8F8FA] hover:bg-[#E4E4E7]/60 transition-colors cursor-pointer group"
                 >
                   <div className="flex items-center gap-3">
                     <img
@@ -356,9 +358,9 @@ export default function AdminRewardsPage() {
                       <span className="text-xs font-semibold text-[#1C1C1E]">
                         veg_momo_plate.jpg
                       </span>
-                      <span className="text-[11px] text-[#6E6E73]">
+                      <span className="text-[11px] text-[#6E6E73] font-normal">
                         420 KB •{" "}
-                        <span className="text-[#1C7C54] group-hover:underline">
+                        <span className="text-[#1C7C54] font-semibold group-hover:underline">
                           Change image
                         </span>
                       </span>
@@ -371,10 +373,10 @@ export default function AdminRewardsPage() {
               {/* Active Status Toggle */}
               <div className="flex items-center justify-between py-2 px-1">
                 <div className="flex flex-col">
-                  <span className="text-xs font-bold text-[#1C1C1E]">
+                  <span className="text-xs font-semibold text-[#1C1C1E]">
                     Active Status
                   </span>
-                  <span className="text-[11px] text-[#6E6E73]">
+                  <span className="text-[11px] text-[#6E6E73] font-normal">
                     Available for customers to earn immediately
                   </span>
                 </div>
@@ -386,7 +388,7 @@ export default function AdminRewardsPage() {
                   }`}
                 >
                   <span
-                    className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ${
+                    className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-xs ring-0 transition duration-200 ${
                       isActiveStatus ? "translate-x-5" : "translate-x-0"
                     }`}
                   />
@@ -396,7 +398,7 @@ export default function AdminRewardsPage() {
               {/* Live Preview Section */}
               <div className="flex flex-col gap-2 pt-2 border-t border-[#E4E4E7]">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                  <span className="text-[11px] font-medium text-[#6E6E73] uppercase tracking-wider">
                     LIVE PREVIEW
                   </span>
                   <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#1C7C54]">
@@ -406,7 +408,7 @@ export default function AdminRewardsPage() {
                 </div>
 
                 {/* Customer App Live Card Preview */}
-                <div className="p-3.5 bg-white rounded-2xl border border-[#E4E4E7] shadow-sm flex items-center gap-3">
+                <div className="p-3.5 bg-white rounded-2xl border border-[#E4E4E7] shadow-xs flex items-center gap-3">
                   <img
                     src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=120&q=80"
                     alt="Preview"
@@ -430,7 +432,7 @@ export default function AdminRewardsPage() {
                       />
                     </div>
 
-                    <div className="flex items-center justify-between text-[10px] text-[#6E6E73]">
+                    <div className="flex items-center justify-between text-[10px] text-[#6E6E73] font-medium">
                       <span>
                         {visitsRequired - 5 > 0
                           ? `${visitsRequired - 5} more visits to unlock`
@@ -445,7 +447,7 @@ export default function AdminRewardsPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full mt-2 py-3.5 px-5 rounded-xl text-xs text-white font-bold flex items-center justify-center gap-2 bg-[#1C7C54] hover:bg-[#16603F] active:scale-[0.99] transition-all shadow-sm"
+                className="w-full mt-2 py-3 px-5 rounded-xl text-xs text-white font-bold flex items-center justify-center gap-2 bg-[#1C7C54] hover:bg-[#16603F] active:scale-[0.99] transition-all shadow-xs"
               >
                 <Check className="w-4 h-4 stroke-[3]" />
                 <span>Save Reward</span>
@@ -457,3 +459,4 @@ export default function AdminRewardsPage() {
     </div>
   );
 }
+

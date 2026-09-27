@@ -1,19 +1,35 @@
 "use client";
 
 import React, { useState } from "react";
-import { Building, Award, Bell, ShieldCheck, Save } from "lucide-react";
-import { MOCK_BUSINESS_SETTINGS } from "@/lib/mock-data";
+import {
+  Store,
+  Monitor,
+  Shield,
+  Bell,
+  MapPin,
+  Upload,
+  Check,
+  Globe,
+  AtSign,
+  Share2,
+  MessageSquareQuote
+} from "lucide-react";
 
 export default function AdminSettingsPage() {
   const [activeTab, setActiveTab] = useState<
-    "business" | "loyalty" | "notifications" | "security"
+    "business" | "loyalty" | "verification" | "notifications"
   >("business");
 
-  const [form, setForm] = useState(MOCK_BUSINESS_SETTINGS);
-
-  const handleChange = (field: string, value: any) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
+  // Form State
+  const [businessName, setBusinessName] = useState("ABC Café");
+  const [address, setAddress] = useState("Jhamsikhel, Lalitpur, Nepal");
+  const [phone, setPhone] = useState("9801234567");
+  const [instagram, setInstagram] = useState("@abccafe");
+  const [facebook, setFacebook] = useState("facebook.com/abccafe");
+  const [website, setWebsite] = useState("https://abccafe.com");
+  const [googleReview, setGoogleReview] = useState(
+    "https://g.page/r/Cdf81Qk2LpABEAI/review"
+  );
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,219 +37,337 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <div className="flex flex-col w-full gap-6">
-      {/* Header Row */}
-      <div>
-        <h1 className="text-2xl font-bold text-[#1C1C1E] tracking-tight">
+    <div className="flex flex-col w-full max-w-7xl mx-auto gap-6">
+      {/* 1. Page Header */}
+      <div className="flex flex-col">
+        <h1 className="text-3xl font-bold text-[#1C1C1E] tracking-tight">
           Settings
         </h1>
-        <p className="text-xs text-[#6E6E73] mt-0.5">
-          Manage business profile, loyalty rules, and administrative preferences
+        <p className="text-xs text-[#6E6E73] mt-1 font-medium">
+          Manage your business profile, location anchors, and public communication touchpoints
         </p>
       </div>
 
-      {/* Tabs Row */}
-      <div className="flex items-center gap-2 border-b border-[#E4E4E7]">
+      {/* 2. Tab Navigation Bar */}
+      <div className="flex items-center gap-6 border-b border-[#E4E4E7] overflow-x-auto select-none">
         <button
           onClick={() => setActiveTab("business")}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
+          type="button"
+          className={`flex items-center gap-2 pb-3 text-xs transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "business"
-              ? "border-[#1C7C54] text-[#1C7C54]"
-              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E]"
+              ? "border-[#046A38] text-[#046A38] font-bold"
+              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E] font-medium"
           }`}
         >
-          <Building className="w-4 h-4" />
-          <span>Business Profile</span>
+          <Store className="w-4 h-4" />
+          <span>Business</span>
         </button>
 
         <button
           onClick={() => setActiveTab("loyalty")}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
+          type="button"
+          className={`flex items-center gap-2 pb-3 text-xs transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "loyalty"
-              ? "border-[#1C7C54] text-[#1C7C54]"
-              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E]"
+              ? "border-[#046A38] text-[#046A38] font-bold"
+              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E] font-medium"
           }`}
         >
-          <Award className="w-4 h-4" />
-          <span>Loyalty Rules</span>
+          <Monitor className="w-4 h-4 text-[#6E6E73]" />
+          <span>Loyalty Program</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("verification")}
+          type="button"
+          className={`flex items-center gap-2 pb-3 text-xs transition-colors border-b-2 whitespace-nowrap ${
+            activeTab === "verification"
+              ? "border-[#046A38] text-[#046A38] font-bold"
+              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E] font-medium"
+          }`}
+        >
+          <Shield className="w-4 h-4 text-[#6E6E73]" />
+          <span>Verification & Fraud</span>
         </button>
 
         <button
           onClick={() => setActiveTab("notifications")}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
+          type="button"
+          className={`flex items-center gap-2 pb-3 text-xs transition-colors border-b-2 whitespace-nowrap ${
             activeTab === "notifications"
-              ? "border-[#1C7C54] text-[#1C7C54]"
-              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E]"
+              ? "border-[#046A38] text-[#046A38] font-bold"
+              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E] font-medium"
           }`}
         >
-          <Bell className="w-4 h-4" />
+          <Bell className="w-4 h-4 text-[#6E6E73]" />
           <span>Notifications</span>
-        </button>
-
-        <button
-          onClick={() => setActiveTab("security")}
-          className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
-            activeTab === "security"
-              ? "border-[#1C7C54] text-[#1C7C54]"
-              : "border-transparent text-[#6E6E73] hover:text-[#1C1C1E]"
-          }`}
-        >
-          <ShieldCheck className="w-4 h-4" />
-          <span>Security & Access</span>
         </button>
       </div>
 
-      {/* Tab Contents */}
+      {/* 3. Business Tab Content Container */}
       {activeTab === "business" && (
         <form
           onSubmit={handleSave}
-          className="bg-white rounded-2xl p-6 shadow-sm border border-[#E4E4E7] flex flex-col gap-6 max-w-3xl"
+          className="bg-white rounded-2xl shadow-sm border border-[#E4E4E7] p-6 flex flex-col gap-6"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Business Name
-              </label>
-              <input
-                type="text"
-                value={form.businessName}
-                onChange={(e) => handleChange("businessName", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
+          {/* SECTION 1: Store Identity */}
+          <div className="flex flex-col md:flex-row gap-6 pb-6 border-b border-[#E4E4E7]">
+            <div className="w-full md:w-1/3 flex flex-col">
+              <h2 className="text-base font-bold text-[#1C1C1E]">
+                Store Identity
+              </h2>
+              <p className="text-xs text-[#6E6E73] mt-1 font-medium leading-relaxed">
+                Essential commercial name and emblem displayed across receipts, digital passes, and customer mobile apps.
+              </p>
             </div>
 
-            <div className="flex flex-col space-y-1.5">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Tagline / Slogan
-              </label>
-              <input
-                type="text"
-                value={form.tagline}
-                onChange={(e) => handleChange("tagline", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
-            </div>
+            <div className="w-full md:w-2/3 flex flex-col gap-5">
+              {/* Business Name */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                  BUSINESS NAME
+                </label>
+                <input
+                  type="text"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-[#F8F8FA] text-[#1C1C1E] text-xs font-semibold rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#046A38] focus:bg-white transition-colors"
+                />
+                <span className="text-[11px] text-[#6E6E73] font-medium">
+                  Shown to customers across the app.
+                </span>
+              </div>
 
-            <div className="flex flex-col space-y-1.5">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Contact Phone
-              </label>
-              <input
-                type="text"
-                value={form.phone}
-                onChange={(e) => handleChange("phone", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
-            </div>
+              {/* Store Logo */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                  STORE LOGO
+                </label>
+                <div className="flex items-center gap-4">
+                  {/* Logo Preview Circle */}
+                  <div className="w-12 h-12 rounded-full bg-[#F2F2F5] border border-[#E4E4E7] flex items-center justify-center text-xs font-bold text-[#046A38] shadow-xs flex-shrink-0">
+                    ABC
+                  </div>
 
-            <div className="flex flex-col space-y-1.5">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Support Email
-              </label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => handleChange("email", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
-            </div>
-
-            <div className="flex flex-col space-y-1.5 md:col-span-2">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Store Address
-              </label>
-              <input
-                type="text"
-                value={form.address}
-                onChange={(e) => handleChange("address", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
-            </div>
-
-            <div className="flex flex-col space-y-1.5">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                City / Region
-              </label>
-              <input
-                type="text"
-                value={form.city}
-                onChange={(e) => handleChange("city", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
-            </div>
-
-            <div className="flex flex-col space-y-1.5">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Currency
-              </label>
-              <input
-                type="text"
-                value={form.currency}
-                onChange={(e) => handleChange("currency", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
-            </div>
-
-            <div className="flex flex-col space-y-1.5 md:col-span-2">
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#1C1C1E]">
-                Operating Hours
-              </label>
-              <input
-                type="text"
-                value={form.businessHours}
-                onChange={(e) => handleChange("businessHours", e.target.value)}
-                className="px-3.5 py-2 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] focus:outline-none focus:border-[#1C7C54]"
-              />
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => alert("Upload logo")}
+                      className="px-3 py-1.5 bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#046A38] text-xs font-bold rounded-lg transition-colors inline-flex items-center gap-1.5"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Change logo</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => alert("Remove logo")}
+                      className="text-xs font-semibold text-[#6E6E73] hover:text-[#1C1C1E] transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+                <span className="text-[11px] text-[#6E6E73] font-medium mt-1">
+                  PNG or JPG up to 2MB. Square 1:1 ratio recommended.
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-[#E4E4E7] flex justify-end">
+          {/* SECTION 2: Physical & Direct Contact */}
+          <div className="flex flex-col md:flex-row gap-6 pb-6 border-b border-[#E4E4E7]">
+            <div className="w-full md:w-1/3 flex flex-col">
+              <h2 className="text-base font-bold text-[#1C1C1E]">
+                Physical & Direct Contact
+              </h2>
+              <p className="text-xs text-[#6E6E73] mt-1 font-medium leading-relaxed">
+                Geographic coordinates and phone channels for customer visit verification and staff escalation.
+              </p>
+            </div>
+
+            <div className="w-full md:w-2/3 flex flex-col gap-5">
+              {/* Physical Location */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                  PHYSICAL LOCATION / ADDRESS
+                </label>
+                <div className="relative flex items-center">
+                  <MapPin className="w-4 h-4 absolute left-3 text-[#6E6E73] pointer-events-none" />
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2.5 bg-[#F8F8FA] text-[#1C1C1E] text-xs font-semibold rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#046A38] focus:bg-white transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Contact Phone */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                  CONTACT PHONE
+                </label>
+                <div className="flex items-center rounded-xl border border-[#E4E4E7] bg-[#F8F8FA] overflow-hidden focus-within:border-[#046A38] focus-within:bg-white transition-colors">
+                  <div className="px-3.5 py-2.5 bg-[#F2F2F5] border-r border-[#E4E4E7] text-xs font-bold text-[#1C1C1E] select-none flex items-center">
+                    +977
+                  </div>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-3 py-2.5 bg-transparent text-[#1C1C1E] text-xs font-semibold focus:outline-none"
+                  />
+                </div>
+                <span className="text-[11px] text-[#6E6E73] font-medium">
+                  Used for customer support and account verification.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION 3: Social Links */}
+          <div className="flex flex-col md:flex-row gap-6 pb-6 border-b border-[#E4E4E7]">
+            <div className="w-full md:w-1/3 flex flex-col">
+              <h2 className="text-base font-bold text-[#1C1C1E]">
+                Social Links
+              </h2>
+              <p className="text-xs text-[#6E6E73] mt-1 font-medium leading-relaxed">
+                Target profile endpoints linked inside loyalty confirmation summaries and member portals.
+              </p>
+            </div>
+
+            <div className="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Instagram */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider flex items-center gap-1">
+                  <AtSign className="w-3 h-3 text-[#6E6E73]" />
+                  INSTAGRAM
+                </label>
+                <input
+                  type="text"
+                  value={instagram}
+                  onChange={(e) => setInstagram(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-[#F8F8FA] text-[#1C1C1E] text-xs font-semibold rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#046A38] focus:bg-white transition-colors"
+                />
+              </div>
+
+              {/* Facebook */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider flex items-center gap-1">
+                  <Share2 className="w-3 h-3 text-[#6E6E73]" />
+                  FACEBOOK
+                </label>
+                <input
+                  type="text"
+                  value={facebook}
+                  onChange={(e) => setFacebook(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-[#F8F8FA] text-[#1C1C1E] text-xs font-semibold rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#046A38] focus:bg-white transition-colors"
+                />
+              </div>
+
+              {/* Website */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider flex items-center gap-1">
+                  <Globe className="w-3 h-3 text-[#6E6E73]" />
+                  WEBSITE
+                </label>
+                <input
+                  type="text"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-[#F8F8FA] text-[#1C1C1E] text-xs font-semibold rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#046A38] focus:bg-white transition-colors"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION 4: Reputation & Feedback */}
+          <div className="flex flex-col md:flex-row gap-6 pb-2">
+            <div className="w-full md:w-1/3 flex flex-col">
+              <h2 className="text-base font-bold text-[#1C1C1E]">
+                Reputation & Feedback
+              </h2>
+              <p className="text-xs text-[#6E6E73] mt-1 font-medium leading-relaxed">
+                Routing link dispatched to VIP and repeated guests after reward claim milestones.
+              </p>
+            </div>
+
+            <div className="w-full md:w-2/3 flex flex-col gap-1.5">
+              <label className="text-[10px] font-bold text-[#6E6E73] uppercase tracking-wider">
+                GOOGLE REVIEW LINK
+              </label>
+              <div className="relative flex items-center">
+                <MessageSquareQuote className="w-4 h-4 absolute left-3 text-[#6E6E73] pointer-events-none" />
+                <input
+                  type="text"
+                  value={googleReview}
+                  onChange={(e) => setGoogleReview(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2.5 bg-[#F8F8FA] text-[#1C1C1E] text-xs font-semibold rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#046A38] focus:bg-white transition-colors"
+                />
+              </div>
+              <span className="text-[11px] text-[#6E6E73] font-medium">
+                Guests are invited to leave a review after a positive visit.
+              </span>
+            </div>
+          </div>
+
+          {/* FOOTER ACTIONS ROW */}
+          <div className="flex items-center justify-between pt-4 border-t border-[#E4E4E7]">
+            <button
+              type="button"
+              onClick={() => alert("Changes discarded")}
+              className="px-4 py-2 bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] rounded-xl text-xs font-semibold transition-colors border border-transparent"
+            >
+              Cancel
+            </button>
+
             <button
               type="submit"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1C7C54] hover:bg-[#16603F] text-white text-xs font-semibold shadow-sm transition-colors"
+              className="px-5 py-2.5 bg-[#046A38] hover:bg-[#03522B] text-white rounded-xl text-xs font-bold transition-colors shadow-sm inline-flex items-center gap-1.5"
             >
-              <Save className="w-4 h-4" />
-              <span>Save Business Settings</span>
+              <Check className="w-4 h-4 stroke-[3]" />
+              <span>Save Changes</span>
             </button>
           </div>
         </form>
       )}
 
+      {/* 4. Stub Tabs */}
       {activeTab === "loyalty" && (
-        <div className="bg-white rounded-2xl p-12 shadow-sm border border-[#E4E4E7] text-center max-w-3xl">
-          <Award className="w-10 h-10 text-[#6E6E73] mx-auto mb-3" />
-          <h2 className="text-base font-semibold text-[#1C1C1E] mb-1">
-            Loyalty Program Rules
+        <div className="bg-white rounded-2xl p-12 shadow-sm border border-[#E4E4E7] text-center">
+          <Monitor className="w-10 h-10 text-[#6E6E73] mx-auto mb-3" />
+          <h2 className="text-base font-bold text-[#1C1C1E] mb-1">
+            Loyalty Program Configuration
           </h2>
-          <p className="text-xs text-[#6E6E73]">
-            Settings pending — tab available for future configuration options.
+          <p className="text-xs text-[#6E6E73] font-medium">
+            Settings pending — tab stub active for future configuration options.
+          </p>
+        </div>
+      )}
+
+      {activeTab === "verification" && (
+        <div className="bg-white rounded-2xl p-12 shadow-sm border border-[#E4E4E7] text-center">
+          <Shield className="w-10 h-10 text-[#6E6E73] mx-auto mb-3" />
+          <h2 className="text-base font-bold text-[#1C1C1E] mb-1">
+            Verification & Fraud Prevention
+          </h2>
+          <p className="text-xs text-[#6E6E73] font-medium">
+            Settings pending — tab stub active for future configuration options.
           </p>
         </div>
       )}
 
       {activeTab === "notifications" && (
-        <div className="bg-white rounded-2xl p-12 shadow-sm border border-[#E4E4E7] text-center max-w-3xl">
+        <div className="bg-white rounded-2xl p-12 shadow-sm border border-[#E4E4E7] text-center">
           <Bell className="w-10 h-10 text-[#6E6E73] mx-auto mb-3" />
-          <h2 className="text-base font-semibold text-[#1C1C1E] mb-1">
-            Notification Settings
+          <h2 className="text-base font-bold text-[#1C1C1E] mb-1">
+            Notification Rules
           </h2>
-          <p className="text-xs text-[#6E6E73]">
-            Settings pending — tab available for future configuration options.
-          </p>
-        </div>
-      )}
-
-      {activeTab === "security" && (
-        <div className="bg-white rounded-2xl p-12 shadow-sm border border-[#E4E4E7] text-center max-w-3xl">
-          <ShieldCheck className="w-10 h-10 text-[#6E6E73] mx-auto mb-3" />
-          <h2 className="text-base font-semibold text-[#1C1C1E] mb-1">
-            Security & Access Controls
-          </h2>
-          <p className="text-xs text-[#6E6E73]">
-            Settings pending — tab available for future configuration options.
+          <p className="text-xs text-[#6E6E73] font-medium">
+            Settings pending — tab stub active for future configuration options.
           </p>
         </div>
       )}
     </div>
   );
 }
+

@@ -1,23 +1,24 @@
 "use client";
 
 import React from "react";
-import { Search, Bell, HelpCircle, User, ChevronDown } from "lucide-react";
+import { Search, Bell, HelpCircle } from "lucide-react";
+import { UserProfileRow } from "./UserProfileRow";
 
 export const AdminHeader: React.FC = () => {
   return (
-    <header className="fixed top-0 left-64 right-0 h-16 bg-white border-b border-[#E4E4E7] z-20 px-8 flex items-center justify-between">
-      <div className="flex items-center gap-4 w-full max-w-md">
+    <header className="fixed top-0 left-[260px] right-0 h-16 bg-white border-b border-[#E4E4E7] z-20 px-8 flex items-center justify-between">
+      <div className="flex items-center gap-4 w-full max-w-[400px]">
         <div className="relative w-full">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#6E6E73]" />
           <input
             type="text"
             placeholder="Search customers, rewards, or staff..."
-            className="w-full pl-9 pr-3 py-1.5 bg-[#F2F2F5] border border-[#E4E4E7] rounded-xl text-xs text-[#1C1C1E] placeholder:text-[#6E6E73] focus:outline-none focus:border-[#1C7C54] focus:bg-white transition-colors"
+            className="w-full pl-9 pr-3 py-2 bg-[#F2F2F5] border border-transparent rounded-xl text-xs text-[#1C1C1E] placeholder:text-[#6E6E73] focus:outline-none focus:border-[#1C7C54] focus:bg-white transition-colors"
           />
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <button
           type="button"
           aria-label="Notifications"
@@ -35,15 +36,11 @@ export const AdminHeader: React.FC = () => {
           <HelpCircle className="w-4 h-4" />
         </button>
 
-        <div className="h-5 w-px bg-[#E4E4E7] mx-1" />
+        <div className="h-5 w-px bg-[#E4E4E7]" />
 
-        <div className="flex items-center gap-2 pl-1 cursor-pointer group">
-          <div className="w-8 h-8 rounded-full bg-[#1C7C54] flex items-center justify-center text-white">
-            <User className="w-4 h-4" />
-          </div>
-          <ChevronDown className="w-4 h-4 text-[#6E6E73] group-hover:text-[#1C1C1E] transition-colors" />
-        </div>
+        <UserProfileRow compact />
       </div>
     </header>
   );
 };
+

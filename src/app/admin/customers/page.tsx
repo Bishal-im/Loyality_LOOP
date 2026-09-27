@@ -126,59 +126,63 @@ export default function AdminCustomersPage() {
       {/* Main View Container */}
       <div className="flex flex-col bg-white rounded-2xl shadow-sm border border-[#E4E4E7] overflow-hidden">
         {/* Header Block: Title, Search, and Segmented Filter Bar */}
-        <div className="p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white border-b border-[#E4E4E7]">
-          <div className="flex flex-col">
-            <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-[#1C1C1E] tracking-tight whitespace-nowrap">
-                Customers
-              </h1>
-              <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-[#F2F2F5] text-xs font-medium text-[#6E6E73]">
-                Live
-              </span>
+        <div className="p-6 flex flex-col gap-4 bg-white border-b border-[#E4E4E7]">
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h1 className="text-3xl font-bold text-[#1C1C1E] tracking-tight whitespace-nowrap">
+                  Customers
+                </h1>
+                <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-[#F2F2F5] text-xs font-semibold text-[#6E6E73]">
+                  Live
+                </span>
+              </div>
+              <p className="text-xs text-[#6E6E73] mt-1 font-medium">1,248 total customers</p>
             </div>
-            <p className="text-xs text-[#6E6E73] mt-1">1,248 total customers</p>
+
+            {/* Controls Right Header Row */}
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Search Field */}
+              <div className="relative flex items-center min-w-[220px]">
+                <Search className="w-4 h-4 absolute left-3 text-[#6E6E73] pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search by name or phone"
+                  value={searchKeyword}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 bg-[#F2F2F5] text-[#1C1C1E] placeholder:text-[#6E6E73] text-xs rounded-xl border border-transparent focus:outline-none focus:border-[#1C7C54] focus:bg-white transition-colors"
+                />
+              </div>
+
+              {/* Segmented Filter Control Pills */}
+              <div className="inline-flex items-center p-1 bg-[#F2F2F5] rounded-xl gap-1">
+                {(["all", "new", "regular", "at-risk", "vip"] as const).map((segment) => (
+                  <button
+                    key={segment}
+                    onClick={() => setActiveSegment(segment)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+                      activeSegment === segment
+                        ? "bg-[#1C7C54] text-white shadow-sm"
+                        : "text-[#6E6E73] hover:text-[#1C1C1E]"
+                    }`}
+                    type="button"
+                  >
+                    {segment === "at-risk" ? "At Risk" : segment === "vip" ? "VIP" : segment === "all" ? "All" : segment === "new" ? "New" : "Regular"}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Controls Right */}
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Search Field */}
-            <div className="relative flex items-center min-w-[240px] flex-grow sm:flex-grow-0">
-              <Search className="w-4 h-4 absolute left-3 text-[#6E6E73] pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Search by name or phone"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-[#F2F2F5] text-[#1C1C1E] placeholder:text-[#6E6E73] text-xs rounded-xl border border-[#E4E4E7] focus:outline-none focus:border-[#1C7C54] focus:bg-white transition-colors"
-              />
-            </div>
-
-            {/* Segmented Filter Control Pills */}
-            <div className="inline-flex items-center p-1 bg-[#F2F2F5] rounded-xl gap-1 border border-[#E4E4E7]">
-              {(["all", "new", "regular", "at-risk", "vip"] as const).map((segment) => (
-                <button
-                  key={segment}
-                  onClick={() => setActiveSegment(segment)}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold capitalize transition-all ${
-                    activeSegment === segment
-                      ? "bg-[#1C7C54] text-white shadow-sm"
-                      : "text-[#6E6E73] hover:text-[#1C1C1E] hover:bg-white"
-                  }`}
-                  type="button"
-                >
-                  {segment === "at-risk" ? "At Risk" : segment}
-                </button>
-              ))}
-            </div>
-
-            {/* Filter Tune Icon Button */}
+          {/* Row 2: Filter Button below Search Input */}
+          <div className="flex items-center justify-start lg:justify-end pr-[240px] lg:pr-[310px]">
             <button
               onClick={() => alert("Filter options")}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] transition-colors border border-[#E4E4E7]"
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] transition-colors border border-[#E4E4E7]"
               type="button"
-              title="Filters"
+              title="Filter settings"
             >
-              <SlidersHorizontal className="w-4 h-4 text-[#6E6E73]" />
+              <SlidersHorizontal className="w-3.5 h-3.5 text-[#6E6E73]" />
             </button>
           </div>
         </div>
@@ -187,37 +191,37 @@ export default function AdminCustomersPage() {
         <div className="w-full overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-[#F2F2F5] text-[#6E6E73] text-[11px] font-semibold uppercase tracking-wider border-b border-[#E4E4E7]">
-                <th className="px-6 py-3">NAME</th>
-                <th className="px-4 py-3">STATUS</th>
-                <th className="px-4 py-3">FIRST VISIT</th>
-                <th className="px-4 py-3">LAST VISIT</th>
-                <th className="px-4 py-3 text-right">TOTAL VISITS</th>
-                <th className="px-4 py-3 text-right">REWARDS EARNED</th>
-                <th className="px-6 py-3 text-right w-12" />
+              <tr className="bg-[#F8F8FA] text-[#6E6E73] text-[11px] font-semibold uppercase tracking-wider border-b border-[#E4E4E7]">
+                <th className="px-6 py-3.5">NAME</th>
+                <th className="px-4 py-3.5">STATUS</th>
+                <th className="px-4 py-3.5">FIRST VISIT</th>
+                <th className="px-4 py-3.5">LAST VISIT</th>
+                <th className="px-4 py-3.5 text-right">TOTAL VISITS</th>
+                <th className="px-4 py-3.5 text-right">REWARDS EARNED</th>
+                <th className="px-6 py-3.5 text-right w-12" />
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E4E4E7]">
               {filteredCustomers.map((cust) => (
                 <tr
                   key={cust.id}
-                  className="hover:bg-[#F2F2F5] transition-colors cursor-pointer group"
+                  className="hover:bg-[#F8F8FA] transition-colors cursor-pointer group"
                 >
                   <td className="px-6 py-3.5 whitespace-nowrap">
                     <Link href={`/admin/customers/${cust.id}`} className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#1C7C54]/10 text-[#1C7C54] flex items-center justify-center text-xs font-semibold flex-shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-[#E4E4E7] text-[#1C1C1E] flex items-center justify-center text-xs font-bold flex-shrink-0">
                         {cust.initials}
                       </div>
                       <div className="flex flex-col min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-semibold text-[#1C1C1E] group-hover:text-[#1C7C54] transition-colors">
+                          <span className="font-semibold text-[#1C1C1E] text-sm group-hover:text-[#1C7C54] transition-colors">
                             {cust.name}
                           </span>
                           {cust.isVipStar && (
                             <Star className="w-3.5 h-3.5 text-[#C99700] fill-[#C99700]" />
                           )}
                         </div>
-                        <span className="text-[11px] text-[#6E6E73] mt-0.5">
+                        <span className="text-[11px] text-[#6E6E73] mt-0.5 font-normal">
                           {cust.phone}
                         </span>
                       </div>
@@ -226,25 +230,25 @@ export default function AdminCustomersPage() {
 
                   <td className="px-4 py-3.5 whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${cust.statusBg} ${cust.statusText}`}
+                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${cust.statusBg} ${cust.statusText}`}
                     >
                       {cust.statusLabel}
                     </span>
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-[#6E6E73]">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-[#6E6E73] font-medium">
                     {cust.firstVisit}
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-[#6E6E73]">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-[#6E6E73] font-medium">
                     {cust.lastVisit}
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-semibold text-[#1C1C1E]">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-bold text-[#1C1C1E] text-sm">
                     {cust.totalVisits}
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-semibold text-[#1C1C1E]">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-bold text-[#1C1C1E] text-sm">
                     {cust.rewardsEarned}
                   </td>
 
@@ -261,13 +265,10 @@ export default function AdminCustomersPage() {
 
         {/* Card Footer / Pagination Area */}
         <div className="px-6 py-4 bg-white border-t border-[#E4E4E7] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-xs text-[#6E6E73]">
+          <div className="flex items-center gap-1.5 text-xs text-[#6E6E73]">
             <span>
-              Showing{" "}
-              <span className="font-semibold text-[#1C1C1E]">
-                {filteredCustomers.length}
-              </span>{" "}
-              of <span className="font-semibold text-[#1C1C1E]">1,248</span> customers
+              Showing <span className="font-bold text-[#1C1C1E]">{filteredCustomers.length}</span> of{" "}
+              <span className="font-bold text-[#1C1C1E]">1,248</span> customers
             </span>
           </div>
 
@@ -275,7 +276,7 @@ export default function AdminCustomersPage() {
           <div className="flex items-center gap-2">
             <button
               disabled
-              className="px-3 py-1.5 rounded-xl bg-[#F2F2F5] text-[#6E6E73] text-xs font-medium cursor-not-allowed opacity-50 flex items-center gap-1 border border-[#E4E4E7]"
+              className="px-3 py-1.5 rounded-xl bg-[#F2F2F5] text-[#A1A1AA] text-xs font-semibold cursor-not-allowed opacity-70 flex items-center gap-1"
               type="button"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -290,20 +291,20 @@ export default function AdminCustomersPage() {
                 1
               </button>
               <button
-                className="w-8 h-8 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-medium flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-semibold flex items-center justify-center transition-colors"
                 type="button"
               >
                 2
               </button>
               <button
-                className="w-8 h-8 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-medium flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-semibold flex items-center justify-center transition-colors"
                 type="button"
               >
                 3
               </button>
-              <span className="px-1 text-[#6E6E73] text-xs">…</span>
+              <span className="px-1 text-[#6E6E73] text-xs font-bold">...</span>
               <button
-                className="w-8 h-8 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-medium flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-semibold flex items-center justify-center transition-colors"
                 type="button"
               >
                 208
@@ -311,7 +312,7 @@ export default function AdminCustomersPage() {
             </div>
 
             <button
-              className="px-3 py-1.5 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-medium transition-colors flex items-center gap-1 border border-[#E4E4E7]"
+              className="px-3 py-1.5 rounded-xl bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] text-xs font-semibold transition-colors flex items-center gap-1"
               type="button"
             >
               <span>Next</span>
@@ -323,3 +324,4 @@ export default function AdminCustomersPage() {
     </div>
   );
 }
+
