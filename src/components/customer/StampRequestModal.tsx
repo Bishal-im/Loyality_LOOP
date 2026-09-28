@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import QRCode from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 import { X, RefreshCw, Clock } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -132,14 +132,12 @@ export const StampRequestModal: React.FC<StampRequestModalProps> = ({
                 : "0 0 0 1px var(--c-border), 0 8px 32px rgba(43,33,24,0.08)",
             }}
           >
-            <QRCode
+            <QRCodeSVG
               value={qrValue}
               size={210}
               level="M"
-              renderAs="svg"
               fgColor="#2B2118"
               bgColor="#FFFFFF"
-              includeMargin={false}
             />
           </div>
 
