@@ -22,14 +22,23 @@ export const StampProgressModal: React.FC<StampProgressModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-[#141414]/55 backdrop-blur-[2px] flex items-center justify-center p-6 transition-opacity duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 transition-opacity duration-300 backdrop-blur-[2px]"
+      style={{ backgroundColor: "rgba(43,33,24,0.55)" }}
       onClick={onClose}
     >
       <div
-        className="w-[88%] max-w-[340px] bg-white rounded-2xl p-6 pt-7 pb-8 shadow-[0_12px_40px_-10px_rgba(0,0,0,0.22)] border border-white/60 flex flex-col items-center text-center select-none"
+        className="w-[88%] max-w-[340px] rounded-2xl p-6 pt-7 pb-8 flex flex-col items-center text-center select-none border"
+        style={{
+          backgroundColor: "var(--c-surface)",
+          borderColor: "rgba(255,255,255,0.6)",
+          boxShadow: "0 12px 40px -10px rgba(43,33,24,0.22)",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-[#6E6E73] text-[11px] font-semibold tracking-[0.14em] uppercase mb-6">
+        <p
+          className="text-[11px] font-semibold tracking-[0.14em] uppercase mb-6"
+          style={{ color: "var(--c-text-secondary)" }}
+        >
           {rewardTitle}
         </p>
 
@@ -42,9 +51,13 @@ export const StampProgressModal: React.FC<StampProgressModalProps> = ({
               return (
                 <div
                   key={index}
-                  className="w-7 h-7 rounded-full bg-[#C99700] text-white flex items-center justify-center shadow-sm"
+                  className="w-7 h-7 rounded-full flex items-center justify-center"
+                  style={{
+                    backgroundColor: "var(--c-gold)",
+                    boxShadow: "0 1px 6px rgba(217,164,65,0.35)",
+                  }}
                 >
-                  <Check className="w-4 h-4 stroke-[3]" />
+                  <Check className="w-4 h-4 stroke-[3] text-white" />
                 </div>
               );
             }
@@ -52,7 +65,13 @@ export const StampProgressModal: React.FC<StampProgressModalProps> = ({
             if (isJustLanded) {
               return (
                 <div key={index} className="relative flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full bg-[#C99700] text-white flex items-center justify-center ring-2 ring-[#C99700]/30 shadow-[0_0_14px_rgba(201,151,0,0.55)] animate-bounce">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white animate-bounce"
+                    style={{
+                      backgroundColor: "var(--c-gold)",
+                      boxShadow: "0 0 14px rgba(217,164,65,0.55), 0 0 0 2px rgba(217,164,65,0.3)",
+                    }}
+                  >
                     <Check className="w-4.5 h-4.5 stroke-[3]" />
                   </div>
                 </div>
@@ -62,17 +81,24 @@ export const StampProgressModal: React.FC<StampProgressModalProps> = ({
             return (
               <div
                 key={index}
-                className="w-7 h-7 rounded-full border-2 border-[#E4E4E7] bg-transparent"
+                className="w-7 h-7 rounded-full border-2"
+                style={{
+                  borderColor: "var(--c-border)",
+                  backgroundColor: "transparent",
+                }}
               />
             );
           })}
         </div>
 
-        <h3 className="text-[#1C1C1E] text-[22px] font-semibold tracking-tight leading-tight mb-1.5">
+        <h3
+          className="text-[22px] font-semibold tracking-tight leading-tight mb-1.5"
+          style={{ color: "var(--c-text-primary)" }}
+        >
           +1 Visit
         </h3>
 
-        <p className="text-[#6E6E73] text-[13px] leading-relaxed">
+        <p className="text-[13px] leading-relaxed" style={{ color: "var(--c-text-secondary)" }}>
           {totalStamps - currentStamps > 0
             ? `${totalStamps - currentStamps} more ${
                 totalStamps - currentStamps === 1 ? "visit" : "visits"

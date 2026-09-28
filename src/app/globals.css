@@ -1,37 +1,102 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   CUSTOMER PANEL — Design Token System
+   Single source of truth for the warm-premium loyalty-app palette.
+   All customer-panel components reference these variables; the admin panel
+   is intentionally left untouched.
+───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --bg: #F2F2F5;
-  --surface: #FFFFFF;
-  --border: #E4E4E7;
-  --primary: #1C7C54;
-  --primary-deep: #16603F;
-  --gold: #C99700;
-  --alert: #E15554;
-  --text-primary: #1C1C1E;
-  --text-secondary: #6E6E73;
+  /* Primary */
+  --c-espresso:        #2B2118;   /* Deep Espresso — headings, primary text    */
+  --c-terracotta:      #C96F4A;   /* Terracotta — primary CTA buttons, icons   */
+  --c-terracotta-deep: #A85638;   /* Terracotta pressed / hover                */
+
+  /* Secondary */
+  --c-peach:           #F4D8C8;   /* Peach Cream — reward card accents         */
+  --c-gold:            #D9A441;   /* Golden Sand — stamps, badges, highlights  */
+  --c-gold-light:      #FBF0D9;   /* Gold tint — stamp ring / empty bg         */
+  --c-sage:            #8FA58F;   /* Sage — success / approved states          */
+  --c-sage-light:      #E8F0E8;   /* Sage tint — success badge bg              */
+
+  /* Backgrounds */
+  --c-bg:              #FFF9F3;   /* Warm Ivory — main customer-panel bg       */
+  --c-surface:         #FFFFFF;   /* White — cards, modals, nav                */
+
+  /* Text */
+  --c-text-primary:    #2B2118;   /* Primary body & heading text               */
+  --c-text-secondary:  #786B60;   /* Secondary / descriptive text              */
+  --c-text-muted:      #9A9087;   /* Muted / helper text                       */
+
+  /* Borders & Dividers */
+  --c-border:          #EDE5DC;   /* Warm neutral border                       */
+  --c-border-strong:   #D9CFC4;   /* Slightly heavier border                   */
+
+  /* Announcement / promo banner */
+  --c-banner-bg:       #FFF4E8;   /* Warm amber tint                           */
+  --c-banner-border:   #F2D9B0;   /* Amber border                              */
+  --c-banner-text:     #7A4F1E;   /* Deep amber text                           */
+
+  /* Loyalty passport card (dark surface) */
+  --c-card-dark:       #2B1D12;   /* Darkest passport bg stop                  */
+  --c-card-mid:        #3D2510;   /* Mid passport bg stop                      */
+  --c-card-accent:     #8FA58F;   /* Passport sub-labels (reused sage)         */
+  --c-card-light:      #C4B8A8;   /* Passport muted text                       */
+
+  /* Error / destructive (admin-safe; do not change) */
+  --c-alert:           #D94F4F;   /* Restrained warm red for errors only       */
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tailwind v4 @theme — exposes CSS variables as Tailwind color tokens
+   Usage: bg-c-bg, text-c-espresso, border-c-border, etc.
+───────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-deep: var(--primary-deep);
-  --color-gold: var(--gold);
-  --color-alert: var(--alert);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
+  --color-c-espresso:        var(--c-espresso);
+  --color-c-terracotta:      var(--c-terracotta);
+  --color-c-terracotta-deep: var(--c-terracotta-deep);
+  --color-c-peach:           var(--c-peach);
+  --color-c-gold:            var(--c-gold);
+  --color-c-gold-light:      var(--c-gold-light);
+  --color-c-sage:            var(--c-sage);
+  --color-c-sage-light:      var(--c-sage-light);
+  --color-c-bg:              var(--c-bg);
+  --color-c-surface:         var(--c-surface);
+  --color-c-text-primary:    var(--c-text-primary);
+  --color-c-text-secondary:  var(--c-text-secondary);
+  --color-c-text-muted:      var(--c-text-muted);
+  --color-c-border:          var(--c-border);
+  --color-c-border-strong:   var(--c-border-strong);
+  --color-c-banner-bg:       var(--c-banner-bg);
+  --color-c-banner-border:   var(--c-banner-border);
+  --color-c-banner-text:     var(--c-banner-text);
+  --color-c-card-dark:       var(--c-card-dark);
+  --color-c-card-mid:        var(--c-card-mid);
+  --color-c-card-accent:     var(--c-card-accent);
+  --color-c-card-light:      var(--c-card-light);
+  --color-c-alert:           var(--c-alert);
 
-  --radius-card: 16px;
+  /* Legacy aliases — keep admin panel working without changes */
+  --color-bg:           var(--c-bg);
+  --color-surface:      var(--c-surface);
+  --color-border:       var(--c-border);
+  --color-primary:      var(--c-terracotta);
+  --color-primary-deep: var(--c-terracotta-deep);
+  --color-gold:         var(--c-gold);
+  --color-alert:        var(--c-alert);
+  --color-text-primary: var(--c-text-primary);
+  --color-text-secondary: var(--c-text-secondary);
+
+  --radius-card:   16px;
   --radius-button: 12px;
-  --radius-chip: 8px;
+  --radius-chip:   8px;
 }
 
 body {
-  background-color: var(--bg);
-  color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", sans-serif;
+  background-color: var(--c-bg);
+  color: var(--c-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Plus Jakarta Sans", sans-serif;
   margin: 0;
   padding: 0;
 }
