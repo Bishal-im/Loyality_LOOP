@@ -3,6 +3,7 @@ export interface Customer {
   name: string;
   phone: string;
   email: string;
+  dob?: string; // Date of birth
   joinedDate: string;
   totalVisits: number;
   currentStamps: number;
@@ -10,6 +11,7 @@ export interface Customer {
   rewardsEarned: number;
   lastVisit: string;
   status: 'Active' | 'Inactive';
+  rank?: 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
   avatar?: string;
   notes?: string;
 }
@@ -72,6 +74,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
     name: "Aarav Sharma",
     phone: "+977 9841234567",
     email: "aarav.sharma@example.com",
+    dob: "1990-05-15",
     joinedDate: "15 Jan 2024",
     totalVisits: 18,
     currentStamps: 8,
@@ -79,6 +82,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
     rewardsEarned: 3,
     lastVisit: "Today, 11:30 AM",
     status: "Active",
+    rank: "Silver",
     notes: "Prefers oat milk latte."
   },
   {
@@ -86,26 +90,30 @@ export const MOCK_CUSTOMERS: Customer[] = [
     name: "Sriya Shrestha",
     phone: "+977 9801987654",
     email: "sriya.s@example.com",
+    dob: "1995-09-20",
     joinedDate: "20 Feb 2024",
     totalVisits: 12,
     currentStamps: 4,
     maxStamps: 10,
     rewardsEarned: 1,
     lastVisit: "Yesterday, 4:15 PM",
-    status: "Active"
+    status: "Active",
+    rank: "Bronze"
   },
   {
     id: "cust_103",
     name: "Rohan Gurung",
     phone: "+977 9811122334",
     email: "rohan.g@example.com",
+    dob: "1988-03-10",
     joinedDate: "02 Mar 2024",
     totalVisits: 25,
     currentStamps: 10,
     maxStamps: 10,
     rewardsEarned: 4,
     lastVisit: "24 Sep 2024",
-    status: "Active"
+    status: "Active",
+    rank: "Gold"
   },
   {
     id: "cust_104",
@@ -125,6 +133,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
     name: "Bikash Tamang",
     phone: "+977 9866677889",
     email: "bikash.t@example.com",
+    dob: "1992-11-25",
     joinedDate: "01 May 2024",
     totalVisits: 2,
     currentStamps: 1,

@@ -53,39 +53,39 @@ export default function CustomerDetailPage({
       <div className="flex items-center justify-between">
         <Link
           href="/admin/customers"
-          className="inline-flex items-center gap-1.5 text-xs text-[#6E6E73] hover:text-[#1C1C1E] font-semibold transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs text-[#718078] hover:text-[#1D2925] font-semibold transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Customers</span>
         </Link>
-        <div className="flex items-center gap-2 text-xs text-[#6E6E73] font-medium uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-xs text-[#718078] font-medium uppercase tracking-wider">
           <span>CLIENT IDENTIFIER:</span>
-          <span className="font-bold text-[#1C1C1E] tracking-normal">
+          <span className="font-bold text-[#1D2925] tracking-normal">
             UID-94821
           </span>
         </div>
       </div>
 
       {/* 2. Profile Header Card */}
-      <section className="bg-white rounded-2xl shadow-sm border border-[#E4E4E7] p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <section className="bg-white rounded-2xl shadow-sm border border-[#E4E2DD] p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-5 min-w-0">
           {/* Initials Avatar */}
-          <div className="w-16 h-16 rounded-full bg-[#E4E4E7] text-[#1C1C1E] flex items-center justify-center text-xl font-bold flex-shrink-0">
+          <div className="w-16 h-16 rounded-full bg-[#E4E2DD] text-[#1D2925] flex items-center justify-center text-xl font-bold flex-shrink-0">
             RT
           </div>
 
           {/* Customer Information */}
           <div className="flex flex-col min-w-0 gap-1">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-2xl font-bold text-[#1C1C1E] tracking-tight">
+              <h1 className="text-2xl font-bold text-[#1D2925] tracking-tight">
                 {customer.name}
               </h1>
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#E15554]/10 text-[#E15554] text-xs font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E15554]" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#C25953]/10 text-[#C25953] text-xs font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C25953]" />
                 {customer.status}
               </span>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs text-[#6E6E73] font-medium">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-[#718078] font-medium">
               <span>{customer.phone}</span>
               <span>•</span>
               <span>{customer.email}</span>
@@ -99,18 +99,18 @@ export default function CustomerDetailPage({
         <div className="flex items-center gap-3 w-full md:w-auto self-end md:self-center">
           <button
             onClick={handleSendReminder}
-            className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] rounded-xl text-xs font-semibold transition-colors border border-transparent"
+            className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] rounded-xl text-xs font-semibold transition-colors border border-transparent"
             type="button"
           >
-            <Send className="w-3.5 h-3.5 text-[#1C1C1E]" />
+            <Send className="w-3.5 h-3.5 text-[#1D2925]" />
             <span>{reminderSent ? "Notification Queued" : "Send Reminder"}</span>
           </button>
           <button
             onClick={() => alert("Edit details modal")}
-            className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#F2F2F5] hover:bg-[#E4E4E7] text-[#1C1C1E] rounded-xl text-xs font-semibold transition-colors border border-transparent"
+            className="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] rounded-xl text-xs font-semibold transition-colors border border-transparent"
             type="button"
           >
-            <Pencil className="w-3.5 h-3.5 text-[#1C1C1E]" />
+            <Pencil className="w-3.5 h-3.5 text-[#1D2925]" />
             <span>Edit Details</span>
           </button>
         </div>
@@ -119,60 +119,60 @@ export default function CustomerDetailPage({
       {/* 3. Metric Stats Row */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Stat 1: Total Visits */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E4E7] flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E2DD] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#718078] uppercase tracking-wider">
               TOTAL VISITS
             </span>
-            <Repeat className="w-4 h-4 text-[#6E6E73]" />
+            <Repeat className="w-4 h-4 text-[#718078]" />
           </div>
           <div className="mt-3">
-            <span className="text-3xl font-bold text-[#1C1C1E]">8</span>
-            <p className="text-xs text-[#6E6E73] mt-0.5 font-medium">Lifetime check-ins</p>
+            <span className="text-3xl font-bold text-[#1D2925]">8</span>
+            <p className="text-xs text-[#718078] mt-0.5 font-medium">Lifetime check-ins</p>
           </div>
         </div>
 
         {/* Stat 2: First Visit */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E4E7] flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E2DD] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#718078] uppercase tracking-wider">
               FIRST VISIT
             </span>
-            <Calendar className="w-4 h-4 text-[#6E6E73]" />
+            <Calendar className="w-4 h-4 text-[#718078]" />
           </div>
           <div className="mt-3">
-            <span className="text-3xl font-bold text-[#1C1C1E]">Aug 1</span>
-            <p className="text-xs text-[#6E6E73] mt-0.5 font-medium">2024 (47 days ago)</p>
+            <span className="text-3xl font-bold text-[#1D2925]">Aug 1</span>
+            <p className="text-xs text-[#718078] mt-0.5 font-medium">2024 (47 days ago)</p>
           </div>
         </div>
 
         {/* Stat 3: Last Visit */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E4E7] flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E2DD] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#718078] uppercase tracking-wider">
               LAST VISIT
             </span>
-            <Clock className="w-4 h-4 text-[#E15554]" />
+            <Clock className="w-4 h-4 text-[#C25953]" />
           </div>
           <div className="mt-3">
-            <span className="text-3xl font-bold text-[#1C1C1E]">Sep 17</span>
-            <p className="text-xs font-semibold text-[#E15554] mt-0.5">
+            <span className="text-3xl font-bold text-[#1D2925]">Sep 17</span>
+            <p className="text-xs font-semibold text-[#C25953] mt-0.5">
               2024 (12 days idle)
             </p>
           </div>
         </div>
 
         {/* Stat 4: Rewards Earned */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E4E7] flex flex-col justify-between">
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-[#E4E2DD] flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider">
+            <span className="text-[11px] font-semibold text-[#718078] uppercase tracking-wider">
               REWARDS EARNED
             </span>
-            <Award className="w-4 h-4 text-[#1C7C54]" />
+            <Award className="w-4 h-4 text-[#173F35]" />
           </div>
           <div className="mt-3">
-            <span className="text-3xl font-bold text-[#1C1C1E]">1</span>
-            <p className="text-xs text-[#6E6E73] mt-0.5 font-medium">Free Veg Momo claimed</p>
+            <span className="text-3xl font-bold text-[#1D2925]">1</span>
+            <p className="text-xs text-[#718078] mt-0.5 font-medium">Free Veg Momo claimed</p>
           </div>
         </div>
       </section>
@@ -180,84 +180,84 @@ export default function CustomerDetailPage({
       {/* 4. Two-Column Operational Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN: Loyalty Progress */}
-        <section className="lg:col-span-6 bg-white rounded-2xl shadow-sm border border-[#E4E4E7] p-6 flex flex-col gap-5">
+        <section className="lg:col-span-6 bg-white rounded-2xl shadow-sm border border-[#E4E2DD] p-6 flex flex-col gap-5">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="text-base font-bold text-[#1C1C1E]">
+              <h2 className="text-base font-bold text-[#1D2925]">
                 Loyalty Progress
               </h2>
-              <p className="text-xs text-[#6E6E73] mt-0.5 font-medium">
+              <p className="text-xs text-[#718078] mt-0.5 font-medium">
                 Customer-facing stamp card mirror in ABC Café App
               </p>
             </div>
-            <span className="px-2.5 py-1 rounded-md bg-[#6EE7B7]/40 text-[#046A38] text-[10px] uppercase font-bold tracking-wider">
+            <span className="px-2.5 py-1 rounded-md bg-[#6EE7B7]/40 text-[#173F35] text-[10px] uppercase font-bold tracking-wider">
               LIVE STAMP MIRROR
             </span>
           </div>
 
           {/* Stamp Card Preview Canvas */}
-          <div className="rounded-2xl bg-[#F8F8FA] p-5 flex flex-col gap-5 border border-[#E4E4E7]">
+          <div className="rounded-2xl bg-[#F5F3EE] p-5 flex flex-col gap-5 border border-[#E4E2DD]">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-semibold text-[#6E6E73] uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-[#718078] uppercase tracking-wider">
                   TARGET REWARD
                 </span>
-                <h3 className="text-lg font-bold text-[#1C1C1E] mt-0.5">
+                <h3 className="text-lg font-bold text-[#1D2925] mt-0.5">
                   Free Veg Momo
                 </h3>
-                <p className="text-xs text-[#6E6E73] font-medium">
+                <p className="text-xs text-[#718078] font-medium">
                   7 customer check-ins required for unlock
                 </p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-[#1C7C54] border border-[#E4E4E7]">
+              <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-[#173F35] border border-[#E4E2DD]">
                 <Utensils className="w-5 h-5" />
               </div>
             </div>
 
             {/* Visual Stamp Grid */}
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-[#E4E4E7]">
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-[#E4E2DD]">
               <div className="flex items-center justify-between gap-1 py-2 px-1">
                 {/* Stamps 1 through 6 (Completed) */}
                 {[1, 2, 3, 4, 5, 6].map((num) => (
                   <div key={num} className="flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#1C7C54] text-white flex items-center justify-center shadow-sm">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#173F35] text-white flex items-center justify-center shadow-sm">
                       <Check className="w-5 h-5 stroke-[3]" />
                     </div>
-                    <span className="text-[11px] text-[#6E6E73] font-semibold">#{num}</span>
+                    <span className="text-[11px] text-[#718078] font-semibold">#{num}</span>
                   </div>
                 ))}
 
                 {/* Stamp 7: Locked */}
                 <div className="flex flex-col items-center gap-1.5">
-                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#F2F2F5] text-[#9CA3AF] flex items-center justify-center border border-[#E4E4E7]">
+                  <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#F8F6F1] text-[#9CA3AF] flex items-center justify-center border border-[#E4E2DD]">
                     <Lock className="w-4 h-4" />
                   </div>
-                  <span className="text-[11px] text-[#6E6E73] font-medium">#7</span>
+                  <span className="text-[11px] text-[#718078] font-medium">#7</span>
                 </div>
               </div>
 
               {/* Progress Bar Info */}
-              <div className="mt-4 bg-[#F2F2F5] rounded-xl px-4 py-2.5 flex items-center justify-between border border-[#E4E4E7]">
-                <div className="flex items-center gap-1.5 text-[#1C7C54] font-bold text-xs">
-                  <Sparkles className="w-4 h-4 fill-[#1C7C54]" />
+              <div className="mt-4 bg-[#F8F6F1] rounded-xl px-4 py-2.5 flex items-center justify-between border border-[#E4E2DD]">
+                <div className="flex items-center gap-1.5 text-[#173F35] font-bold text-xs">
+                  <Sparkles className="w-4 h-4 fill-[#173F35]" />
                   <span>1 more visit to unlock reward</span>
                 </div>
-                <span className="text-xs text-[#6E6E73] font-medium">
+                <span className="text-xs text-[#718078] font-medium">
                   85.7% Complete
                 </span>
               </div>
             </div>
 
             {/* History Micro-Card */}
-            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white shadow-sm border border-[#E4E4E7]">
-              <div className="w-7 h-7 rounded-full bg-[#6EE7B7]/40 text-[#046A38] flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-3 p-3.5 rounded-xl bg-white shadow-sm border border-[#E4E2DD]">
+              <div className="w-7 h-7 rounded-full bg-[#6EE7B7]/40 text-[#173F35] flex items-center justify-center flex-shrink-0">
                 <Check className="w-4 h-4 stroke-[3]" />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-xs font-bold text-[#1C1C1E]">
+                <span className="text-xs font-bold text-[#1D2925]">
                   Reward History Claimed
                 </span>
-                <span className="text-[11px] text-[#6E6E73] truncate font-medium">
+                <span className="text-[11px] text-[#718078] truncate font-medium">
                   1x Free Veg Momo successfully redeemed on Aug 27, 2024
                 </span>
               </div>
@@ -266,17 +266,17 @@ export default function CustomerDetailPage({
         </section>
 
         {/* RIGHT COLUMN: Activity History */}
-        <section className="lg:col-span-6 bg-white rounded-2xl shadow-sm border border-[#E4E4E7] p-6 flex flex-col gap-5">
+        <section className="lg:col-span-6 bg-white rounded-2xl shadow-sm border border-[#E4E2DD] p-6 flex flex-col gap-5">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold text-[#1C1C1E]">
+              <h2 className="text-base font-bold text-[#1D2925]">
                 Activity History
               </h2>
-              <p className="text-xs text-[#6E6E73] mt-0.5 font-medium">
+              <p className="text-xs text-[#718078] mt-0.5 font-medium">
                 Chronological POS check-in logs
               </p>
             </div>
-            <span className="px-2.5 py-1 rounded-md bg-[#F2F2F5] text-[#1C1C1E] text-xs font-semibold">
+            <span className="px-2.5 py-1 rounded-md bg-[#F8F6F1] text-[#1D2925] text-xs font-semibold">
               5 Logged Visits
             </span>
           </div>
@@ -292,14 +292,14 @@ export default function CustomerDetailPage({
             ].map((item, i) => (
               <div
                 key={i}
-                className="flex items-center justify-between p-3.5 rounded-xl bg-[#F8F8FA] border border-[#E4E4E7]"
+                className="flex items-center justify-between p-3.5 rounded-xl bg-[#F5F3EE] border border-[#E4E2DD]"
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div
                     className={`w-8 h-8 rounded-lg ${
                       item.isRedeemed
-                        ? "bg-[#1C7C54] text-white"
-                        : "bg-white text-[#6E6E73] border border-[#E4E4E7]"
+                        ? "bg-[#173F35] text-white"
+                        : "bg-white text-[#718078] border border-[#E4E2DD]"
                     } flex items-center justify-center flex-shrink-0 shadow-sm`}
                   >
                     {item.isRedeemed ? (
@@ -309,30 +309,30 @@ export default function CustomerDetailPage({
                     )}
                   </div>
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs font-bold text-[#1C1C1E] whitespace-nowrap">
+                    <span className="text-xs font-bold text-[#1D2925] whitespace-nowrap">
                       {item.date}
                     </span>
                     {item.isRedeemed && (
-                      <span className="px-2 py-0.5 rounded-full bg-[#6EE7B7]/40 text-[#046A38] text-[10px] font-bold">
+                      <span className="px-2 py-0.5 rounded-full bg-[#6EE7B7]/40 text-[#173F35] text-[10px] font-bold">
                         Redeemed
                       </span>
                     )}
                   </div>
                 </div>
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#6EE7B7]/40 text-[#046A38] text-xs font-bold">
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#6EE7B7]/40 text-[#173F35] text-xs font-bold">
                   {item.type}
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-[#E4E4E7]">
-            <span className="text-xs text-[#6E6E73] font-medium">
+          <div className="flex items-center justify-between pt-2 border-t border-[#E4E2DD]">
+            <span className="text-xs text-[#718078] font-medium">
               Showing last 5 of 8 recorded visits
             </span>
             <button
               onClick={() => alert("Viewing all check-ins")}
-              className="text-xs font-bold text-[#1C7C54] hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-[#173F35] hover:underline flex items-center gap-1"
               type="button"
             >
               <span>View All Check-ins</span>
