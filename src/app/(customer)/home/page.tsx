@@ -5,8 +5,10 @@ import { Bell, ChevronRight, Lock, PartyPopper, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BottomTabBar } from "@/components/customer/BottomTabBar";
+import { StampRequestModal } from "@/components/customer/StampRequestModal";
 import { StampProgressModal } from "@/components/customer/StampProgressModal";
 import { RewardUnlockedModal } from "@/components/customer/RewardUnlockedModal";
+import { GoogleReviewModal } from "@/components/customer/GoogleReviewModal";
 import { useCustomer } from "@/lib/customer-store";
 
 // ─── Stamp dot ────────────────────────────────────────────────────────────────
@@ -44,33 +46,79 @@ function StampDot({ filled, isFree, label }: { filled: boolean; isFree?: boolean
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   const router = useRouter();
-  const { state, addStamp, dismissAnnouncement, unreadCount } = useCustomer();
+  const { state, addStamp, dismissAnnouncement, unreadCount, shouldShowReviewPrompt, dismissReviewPrompt } = useCustomer();
 
-  const [showStampModal, setShowStampModal]   = useState(false);
+  const [showStampModal,  setShowStampModal]  = useState(false);
+  const [showQrModal,     setShowQrModal]     = useState(false);
   const [showRewardModal, setShowRewardModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const [justUnlockedReward, setJustUnlockedReward] = useState<{ id: string; title: string } | null>(null);
 
   const { currentStamps, maxStamps, profile, rewards, announcementText, announcementDismissed } = state;
   const stampsLeft = maxStamps - currentStamps;
-  const unlockedReward = rewards.find(r => r.status === "unlocked");
-  const readyRewards = rewards.filter(r => r.status === "unlocked");
   const milestones = rewards.slice(0, 2);
 
-  const handleRequestStamp = () => {
-    const prevStamps = currentStamps;
+  // Called when admin scan is confirmed (QR modal closes first)
+  const handleStampGranted = () => {
+    // Capture completing reward BEFORE adding the stamp
+    const completingReward = rewards.find(
+      r => r.status === "in_progress" && r.stampsRequired === currentStamps + 1
+    );
+    
+    // Calculate if we should show review after this stamp is added
+    const newTotalStamps = state.totalStamps + 1;
+    const newStampsSinceLastReview = state.stampsSinceLastReviewPrompt + 1;
+    const willShowReviewPrompt = newStampsSinceLastReview >= 3;
+    
+    // Debug logging
+    console.log("Before adding stamp:", {
+      currentStamps,
+      totalStamps: state.totalStamps,
+      stampsSinceLastReviewPrompt: state.stampsSinceLastReviewPrompt,
+      newTotalStamps,
+      newStampsSinceLastReview,
+      willShowReviewPrompt,
+      completingReward: completingReward?.title || "none"
+    });
+    
     addStamp();
     setShowStampModal(true);
-    // Check if this stamp completes a reward
-    const completingReward = rewards.find(
-      r => r.status === "in_progress" && r.stampsRequired === prevStamps + 1
-    );
+
     if (completingReward) {
+      // Stamp unlocked a reward → show reward modal after stamp modal
+      // then offer review after reward modal would normally close
       setTimeout(() => {
         setShowStampModal(false);
         setJustUnlockedReward({ id: completingReward.id, title: completingReward.title });
         setShowRewardModal(true);
       }, 1800);
+    } else if (willShowReviewPrompt) {
+      // No reward unlocked — offer review after stamp modal closes
+      setTimeout(() => {
+        setShowStampModal(false);
+        setShowReviewModal(true);
+      }, 2000);
     }
+  };
+
+  // When the reward modal closes, check whether we should also show the review prompt
+  const handleRewardModalClose = () => {
+    setShowRewardModal(false);
+    
+    // Calculate if we should show review based on current state
+    // (at this point the stamp has already been added)
+    const shouldShowReview = state.stampsSinceLastReviewPrompt === 0 && state.totalStamps > 0;
+    
+    if (shouldShowReview) {
+      // Small delay so modals don't stack immediately
+      setTimeout(() => setShowReviewModal(true), 300);
+    }
+  };
+
+  // Dismiss review modal and tell the store so the counter resets cleanly
+  const handleReviewModalClose = () => {
+    setShowReviewModal(false);
+    dismissReviewPrompt();
   };
 
   return (
@@ -189,7 +237,7 @@ export default function HomePage() {
 
         {/* Request Stamp */}
         <button
-          onClick={handleRequestStamp}
+          onClick={() => setShowQrModal(true)}
           className="w-full flex items-center justify-center gap-2.5 text-white font-semibold text-[15px] py-4 rounded-2xl transition-all active:scale-[0.98]"
           style={{ backgroundColor: "var(--c-terracotta)" }}
           onMouseEnter={e => (e.currentTarget.style.backgroundColor = "var(--c-terracotta-deep)")}
@@ -201,6 +249,22 @@ export default function HomePage() {
             <circle cx="12" cy="9" r="2.5" fill="white" opacity="0.7" />
           </svg>
           Request Stamp
+        </button>
+
+        {/* Admin Testing Button - Bypass QR Scan */}
+        <button
+          onClick={handleStampGranted}
+          className="w-full flex items-center justify-center gap-2.5 font-semibold text-[14px] py-3 rounded-xl transition-all active:scale-[0.98] border-2 border-dashed"
+          style={{ 
+            backgroundColor: "rgba(255, 140, 0, 0.1)", 
+            borderColor: "#ff8c00",
+            color: "#ff8c00"
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2v20M2 12h20" stroke="#ff8c00" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          [TEST] Grant Stamp Directly
         </button>
 
         {/* Next Milestones */}
@@ -272,6 +336,17 @@ export default function HomePage() {
         <div className="h-2" />
       </main>
 
+      {/* QR stamp request sheet — customer shows this to the barista */}
+      <StampRequestModal
+        isOpen={showQrModal}
+        onClose={() => setShowQrModal(false)}
+        patronId={profile.patronId}
+        patronName={profile.name}
+        currentStamps={state.currentStamps}
+        maxStamps={state.maxStamps}
+      />
+
+      {/* Stamp progress overlay — shown AFTER stamp is granted */}
       <StampProgressModal
         isOpen={showStampModal}
         onClose={() => setShowStampModal(false)}
@@ -279,14 +354,27 @@ export default function HomePage() {
         totalStamps={state.maxStamps}
         rewardTitle="Artisan Coffee & Pastry"
       />
+
+      {/* Reward unlocked overlay — shown if stamp completed a reward */}
       <RewardUnlockedModal
         isOpen={showRewardModal}
-        onClose={() => setShowRewardModal(false)}
+        onClose={handleRewardModalClose}
         rewardTitle={justUnlockedReward?.title}
         rewardId={justUnlockedReward?.id}
         currentStamps={state.currentStamps}
         totalStamps={state.maxStamps}
       />
+
+      {/* Google Review modal — shown every 3rd stamp */}
+      <GoogleReviewModal
+        isOpen={showReviewModal}
+        onClose={handleReviewModalClose}
+        reviewUrl={state.googleReviewUrl}
+        currentStamps={state.currentStamps}
+        maxStamps={state.maxStamps}
+        businessName="ABC Café"
+      />
+
       <BottomTabBar />
     </div>
   );

@@ -100,6 +100,18 @@ export interface CustomerState {
   announcementText: string;
   announcementDismissed: boolean;
   isLoggedIn: boolean;
+  /**
+   * Google Review URL configured by the business admin.
+   * Sourced from MOCK_BUSINESS_SETTINGS.google_review_url in production
+   * this would come from the business config API.
+   */
+  googleReviewUrl: string;
+  /**
+   * Counts stamps since the last review prompt was shown.
+   * We show the prompt every REVIEW_PROMPT_EVERY stamps (default: 3).
+   * Starts at 0 so the first prompt fires after the 3rd stamp earned.
+   */
+  stampsSinceLastReviewPrompt: number;
 }
 
 // ─── Initial data ──────────────────────────────────────────────────────────────
@@ -264,7 +276,13 @@ const INITIAL_STATE: CustomerState = {
   announcementText: "Double stamp weekend starting this Friday!",
   announcementDismissed: false,
   isLoggedIn: true,
+  googleReviewUrl: "https://g.page/r/Cdf81Qk2LpABEAI/review",
+  stampsSinceLastReviewPrompt: 2,
 };
+
+// ─── Review prompt frequency ──────────────────────────────────────────────────
+/** Show the Google Review prompt after every Nth stamp earned. */
+const REVIEW_PROMPT_EVERY = 3;
 
 // ─── Actions ───────────────────────────────────────────────────────────────────
 
@@ -276,7 +294,8 @@ type Action =
   | { type: "MARK_ALL_READ" }
   | { type: "SET_NOTIF_PREF"; key: keyof NotificationPrefs; value: boolean }
   | { type: "UPDATE_PROFILE"; patch: Partial<CustomerProfile> }
-  | { type: "SET_LOGGED_IN"; value: boolean };
+  | { type: "SET_LOGGED_IN"; value: boolean }
+  | { type: "DISMISS_REVIEW_PROMPT" };
 
 // ─── Reducer ───────────────────────────────────────────────────────────────────
 
@@ -325,6 +344,11 @@ function reducer(state: CustomerState, action: Action): CustomerState {
         read: false,
       };
 
+      // Increment the review-prompt counter; reset to 0 when threshold is hit
+      const nextCounter = state.stampsSinceLastReviewPrompt + 1;
+      const counterAfterPrompt =
+        nextCounter >= REVIEW_PROMPT_EVERY ? 0 : nextCounter;
+
       return {
         ...state,
         currentStamps: newStamps,
@@ -333,6 +357,7 @@ function reducer(state: CustomerState, action: Action): CustomerState {
         rewards: newRewards,
         activity: [newActivity, ...state.activity],
         notifications: [newNotif, ...state.notifications],
+        stampsSinceLastReviewPrompt: counterAfterPrompt,
       };
     }
 
@@ -420,6 +445,10 @@ function reducer(state: CustomerState, action: Action): CustomerState {
         profile: { ...state.profile, ...action.patch },
       };
 
+    case "DISMISS_REVIEW_PROMPT":
+      // Reset counter so next cycle starts fresh
+      return { ...state, stampsSinceLastReviewPrompt: 0 };
+
     case "SET_LOGGED_IN":
       return { ...state, isLoggedIn: action.value };
 
@@ -440,7 +469,10 @@ interface CustomerContextValue {
   setNotifPref: (key: keyof NotificationPrefs, value: boolean) => void;
   updateProfile: (patch: Partial<CustomerProfile>) => void;
   logout: () => void;
+  dismissReviewPrompt: () => void;
   unreadCount: number;
+  /** True when the ADD_STAMP counter just hit the threshold — home page reads this */
+  shouldShowReviewPrompt: boolean;
 }
 
 const CustomerContext = createContext<CustomerContextValue | null>(null);
@@ -450,16 +482,26 @@ const CustomerContext = createContext<CustomerContextValue | null>(null);
 export function CustomerProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
-  const addStamp        = useCallback(() => dispatch({ type: "ADD_STAMP" }), []);
-  const redeemReward    = useCallback((id: string) => dispatch({ type: "REDEEM_REWARD", rewardId: id }), []);
-  const dismissAnnouncement = useCallback(() => dispatch({ type: "DISMISS_ANNOUNCEMENT" }), []);
+  const addStamp           = useCallback(() => dispatch({ type: "ADD_STAMP" }), []);
+  const redeemReward       = useCallback((id: string) => dispatch({ type: "REDEEM_REWARD", rewardId: id }), []);
+  const dismissAnnouncement= useCallback(() => dispatch({ type: "DISMISS_ANNOUNCEMENT" }), []);
   const markNotificationRead = useCallback((id: string) => dispatch({ type: "MARK_NOTIFICATION_READ", id }), []);
-  const markAllRead     = useCallback(() => dispatch({ type: "MARK_ALL_READ" }), []);
-  const setNotifPref    = useCallback((key: keyof NotificationPrefs, value: boolean) => dispatch({ type: "SET_NOTIF_PREF", key, value }), []);
-  const updateProfile   = useCallback((patch: Partial<CustomerProfile>) => dispatch({ type: "UPDATE_PROFILE", patch }), []);
-  const logout          = useCallback(() => dispatch({ type: "SET_LOGGED_IN", value: false }), []);
+  const markAllRead        = useCallback(() => dispatch({ type: "MARK_ALL_READ" }), []);
+  const setNotifPref       = useCallback((key: keyof NotificationPrefs, value: boolean) => dispatch({ type: "SET_NOTIF_PREF", key, value }), []);
+  const updateProfile      = useCallback((patch: Partial<CustomerProfile>) => dispatch({ type: "UPDATE_PROFILE", patch }), []);
+  const logout             = useCallback(() => dispatch({ type: "SET_LOGGED_IN", value: false }), []);
+  const dismissReviewPrompt= useCallback(() => dispatch({ type: "DISMISS_REVIEW_PROMPT" }), []);
 
   const unreadCount = state.notifications.filter((n) => !n.read).length;
+
+  // The counter resets to 0 the moment it hits REVIEW_PROMPT_EVERY.
+  // So shouldShowReviewPrompt is true only when the counter is exactly 0
+  // AND at least one stamp has ever been earned (totalStamps > 0).
+  // We use totalStamps % 3 === 0 as a reliable derived signal so it
+  // doesn't depend on render timing.
+  const REVIEW_PROMPT_EVERY = 3;
+  const shouldShowReviewPrompt =
+    state.totalStamps > 0 && state.stampsSinceLastReviewPrompt === 0;
 
   return (
     <CustomerContext.Provider
@@ -473,7 +515,9 @@ export function CustomerProvider({ children }: { children: ReactNode }) {
         setNotifPref,
         updateProfile,
         logout,
+        dismissReviewPrompt,
         unreadCount,
+        shouldShowReviewPrompt,
       }}
     >
       {children}

@@ -62,6 +62,8 @@ export interface BusinessSettings {
   stampsPerCard: number;
   businessHours: string;
   logoUrl?: string;
+  /** Google Review short URL — shown to customers after stamp milestones */
+  google_review_url?: string;
 }
 
 export const MOCK_CUSTOMERS: Customer[] = [
@@ -252,5 +254,6 @@ export const MOCK_BUSINESS_SETTINGS: BusinessSettings = {
   currency: "NPR",
   stampsPerCard: 10,
   businessHours: "Mon - Sun: 7:30 AM - 9:30 PM",
-  logoUrl: "/logo-placeholder.svg"
+  logoUrl: "/logo-placeholder.svg",
+  google_review_url: "https://g.page/r/Cdf81Qk2LpABEAI/review",
 };
