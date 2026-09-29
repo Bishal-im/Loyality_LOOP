@@ -7,10 +7,21 @@
    is intentionally left untouched.
 ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* Primary */
+  /* ─────────────────────────────────────────────────────────────────────────
+     GLOBAL THEME TOKEN SYSTEM — PRIMARY ACCENT COLOR SCHEME
+     Single source of truth for the entire application's primary color scheme.
+     To swap the primary color across all admin & customer components,
+     change these values in ONE place.
+  ───────────────────────────────────────────────────────────────────────── */
+  --theme-primary:        #C96F4A;   /* Primary accent (CTAs, active states, borders) */
+  --theme-primary-hover:  #A85638;   /* Primary hover / pressed state */
+  --theme-primary-light:  #FFF4E8;   /* Light primary tint for backgrounds & badges */
+  --theme-primary-border: #F2D9B0;   /* Light primary border tint */
+
+  /* Customer Panel — Design Token System */
   --c-espresso:        #2B2118;   /* Deep Espresso — headings, primary text    */
-  --c-terracotta:      #C96F4A;   /* Terracotta — primary CTA buttons, icons   */
-  --c-terracotta-deep: #A85638;   /* Terracotta pressed / hover                */
+  --c-terracotta:      var(--theme-primary);      /* Terracotta — primary CTA buttons */
+  --c-terracotta-deep: var(--theme-primary-hover); /* Terracotta pressed / hover */
 
   /* Secondary */
   --c-peach:           #F4D8C8;   /* Peach Cream — reward card accents         */
@@ -33,8 +44,8 @@
   --c-border-strong:   #D9CFC4;   /* Slightly heavier border                   */
 
   /* Announcement / promo banner */
-  --c-banner-bg:       #FFF4E8;   /* Warm amber tint                           */
-  --c-banner-border:   #F2D9B0;   /* Amber border                              */
+  --c-banner-bg:       var(--theme-primary-light);   /* Warm amber tint */
+  --c-banner-border:   var(--theme-primary-border);  /* Amber border */
   --c-banner-text:     #7A4F1E;   /* Deep amber text                           */
 
   /* Loyalty passport card (dark surface) */
@@ -43,15 +54,20 @@
   --c-card-accent:     #8FA58F;   /* Passport sub-labels (reused sage)         */
   --c-card-light:      #C4B8A8;   /* Passport muted text                       */
 
-  /* Error / destructive (admin-safe; do not change) */
+  /* Error / destructive */
   --c-alert:           #D94F4F;   /* Restrained warm red for errors only       */
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Tailwind v4 @theme — exposes CSS variables as Tailwind color tokens
-   Usage: bg-c-bg, text-c-espresso, border-c-border, etc.
+   Usage: bg-primary, text-primary, border-primary, bg-primary-light, etc.
 ───────────────────────────────────────────────────────────────────────────── */
 @theme {
+  --color-primary:        var(--theme-primary);
+  --color-primary-hover:  var(--theme-primary-hover);
+  --color-primary-light:  var(--theme-primary-light);
+  --color-primary-border: var(--theme-primary-border);
+
   --color-c-espresso:        var(--c-espresso);
   --color-c-terracotta:      var(--c-terracotta);
   --color-c-terracotta-deep: var(--c-terracotta-deep);
@@ -76,15 +92,15 @@
   --color-c-card-light:      var(--c-card-light);
   --color-c-alert:           var(--c-alert);
 
-  /* Legacy aliases — keep admin panel working without changes */
+  /* Legacy aliases */
   --color-bg:           var(--c-bg);
   --color-surface:      var(--c-surface);
   --color-border:       var(--c-border);
-  --color-primary:      var(--c-terracotta);
-  --color-primary-deep: var(--c-terracotta-deep);
+  --color-primary-deep: var(--theme-primary-hover);
   --color-gold:         var(--c-gold);
   --color-alert:        var(--c-alert);
   --color-text-primary: var(--c-text-primary);
+  --color-text-[#1D2925]: var(--c-text-primary);
   --color-text-secondary: var(--c-text-secondary);
 
   --radius-card:   16px;

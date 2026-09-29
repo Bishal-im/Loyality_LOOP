@@ -17,7 +17,7 @@ import {
 
 export default function AdminSettingsPage() {
   const [activeTab, setActiveTab] = useState<
-    "business" | "loyalty" | "ranks" | "verification" | "notifications"
+    "business" | "loyalty" | "verification" | "notifications"
   >("business");
 
   // Form State
