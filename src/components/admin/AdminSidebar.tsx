@@ -25,6 +25,7 @@ const navItems = [
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Staff", href: "/admin/staff", icon: UserCheck },
   { label: "Campaigns", href: "/admin/campaigns", icon: Megaphone },
+  { label: "Ranks", href: "/admin/ranks", icon: InfinityIcon },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
