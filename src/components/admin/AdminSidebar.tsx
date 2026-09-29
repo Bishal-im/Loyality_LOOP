@@ -1,4 +1,4 @@
-"use client";
+ï»¿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -42,7 +42,7 @@ export const AdminSidebar: React.FC = () => {
             </div>
             <div className="flex flex-col min-w-0 group-hover:hidden">
               <span className="font-display text-base font-medium text-text-primary tracking-tight leading-none">
-                ABC Café
+                ABC CafÃ©
               </span>
               <span className="label-over mt-1.5">Floor desk</span>
             </div>
@@ -57,7 +57,7 @@ export const AdminSidebar: React.FC = () => {
           >
             <div className="flex items-center gap-2 min-w-0">
               <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
-              <span className="text-xs font-semibold text-text-primary truncate">ABC Café</span>
+              <span className="text-xs font-semibold text-text-primary truncate">ABC CafÃ©</span>
             </div>
             <div className="w-4 h-4 text-text-secondary" />
           </button>
