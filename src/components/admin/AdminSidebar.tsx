@@ -68,16 +68,12 @@ export const AdminSidebar: React.FC = () => {
             </div>
             <button
               type="button"
-              className="hidden lg:flex w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:bg-surface-low btn-press"
+              className={`hidden lg:flex w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:bg-surface-low btn-press transition-opacity ${compact ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
               onClick={toggleCollapsed}
               aria-pressed={collapsed}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label="Collapse sidebar"
             >
-              {collapsed ? (
-                <PanelLeftOpen className="w-4 h-4" />
-              ) : (
-                <PanelLeftClose className="w-4 h-4" />
-              )}
+              <X className="w-4 h-4" />
             </button>
             <button
               type="button"

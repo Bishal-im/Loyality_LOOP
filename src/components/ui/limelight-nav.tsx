@@ -111,10 +111,8 @@ export const LimelightNav = ({
       {/* Limelight bar + downward glow beam */}
       <div
         ref={limelightRef}
-        className={`absolute top-0 z-10 w-11 h-[3px] rounded-full ${
-          isReady ? "transition-[left] duration-300 ease-in-out" : ""
-        } ${limelightClassName ?? ""}`}
-        style={{ left: "-999px", backgroundColor: "var(--c-terracotta)" }}
+        className={`absolute top-0 z-10 w-11 h-[3px] rounded-full transition-[left] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${limelightClassName ?? ""}`}
+        style={{ left: isReady ? undefined : "-999px", backgroundColor: "var(--c-terracotta)" }}
       >
         <div
           className="absolute pointer-events-none"
