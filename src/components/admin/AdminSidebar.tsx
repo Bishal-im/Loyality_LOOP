@@ -25,7 +25,6 @@ const navItems = [
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Staff", href: "/admin/staff", icon: UserCheck },
   { label: "Campaigns", href: "/admin/campaigns", icon: Megaphone },
-  { label: "Ranks", href: "/admin/ranks", icon: InfinityIcon },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
@@ -61,10 +60,9 @@ export const AdminSidebar: React.FC = () => {
               <InfinityIcon className="w-5 h-5" />
             </div>
             <div className={`flex flex-col min-w-0 ${compact ? "lg:hidden" : ""}`}>
-              <span className="font-display text-base font-medium text-text-primary tracking-tight leading-none">
+              <span className="font-display text-base font-semibold text-text-primary tracking-tight leading-none">
                 ABC Café
               </span>
-              <span className="label-over mt-1.5">Floor desk</span>
             </div>
             <button
               type="button"
@@ -105,11 +103,11 @@ export const AdminSidebar: React.FC = () => {
                   compact ? "lg:justify-center lg:px-0" : ""
                 } ${
                   isActive
-                    ? "bg-primary/10 text-primary font-semibold"
+                    ? "bg-primary/10 text-primary font-bold shadow-xs"
                     : "text-text-secondary hover:bg-surface-low hover:text-text-primary font-medium"
                 }`}
               >
-                <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-primary" : "text-sage"}`} />
+                <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-primary" : "text-text-secondary"}`} strokeWidth={2} />
                 <span className={`truncate ${compact ? "lg:hidden" : ""}`}>{item.label}</span>
               </Link>
             );

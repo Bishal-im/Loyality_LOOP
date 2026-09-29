@@ -121,7 +121,7 @@ export function getTodayBirthdays(customers: Array<{ id: string; name: string; p
       customerId: customer.id,
       customerName: customer.name,
       customerPhone: customer.phone,
-      customerDob: customer.dob,
+      customerDob: customer.dob!,
       nextBirthday: new Date(),
       notificationSent: false,
       createdAt: new Date(),
