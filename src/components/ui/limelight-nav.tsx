@@ -42,13 +42,18 @@ export const LimelightNav = ({
   activeIndex: controlledActiveIndex,
 }: LimelightNavProps) => {
   const [internalActive, setInternalActive] = useState(defaultActiveIndex);
-  const [isReady, setIsReady] = useState(false);
+  const [prevActiveIndex, setPrevActiveIndex] = useState(defaultActiveIndex);
 
   const activeIndex =
     controlledActiveIndex !== undefined ? controlledActiveIndex : internalActive;
 
   const navItemRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const limelightRef = useRef<HTMLDivElement | null>(null);
+
+  // Update previous active index when current index changes
+  useLayoutEffect(() => {
+    setPrevActiveIndex(activeIndex);
+  }, [activeIndex]);
 
   useLayoutEffect(() => {
     if (items.length === 0) return;
@@ -62,11 +67,8 @@ export const LimelightNav = ({
         activeItem.offsetWidth / 2 -
         limelight.offsetWidth / 2;
       limelight.style.left = `${newLeft}px`;
-      if (!isReady) {
-        setTimeout(() => setIsReady(true), 50);
-      }
     }
-  }, [activeIndex, isReady, items]);
+  }, [activeIndex, items]);
 
   if (items.length === 0) return null;
 
@@ -111,10 +113,8 @@ export const LimelightNav = ({
       {/* Limelight bar + downward glow beam */}
       <div
         ref={limelightRef}
-        className={`absolute top-0 z-10 w-11 h-[3px] rounded-full ${
-          isReady ? "transition-[left] duration-300 ease-in-out" : ""
-        } ${limelightClassName ?? ""}`}
-        style={{ left: "-999px", backgroundColor: "var(--c-terracotta)" }}
+        className={`absolute top-0 z-10 w-11 h-[3px] rounded-full transition-[left] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${limelightClassName ?? ""}`}
+        style={{ backgroundColor: "var(--c-terracotta)" }}
       >
         <div
           className="absolute pointer-events-none"
