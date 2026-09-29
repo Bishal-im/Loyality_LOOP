@@ -68,6 +68,19 @@ export const AdminSidebar: React.FC = () => {
             </div>
             <button
               type="button"
+              className="hidden lg:flex w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:bg-surface-low btn-press"
+              onClick={toggleCollapsed}
+              aria-pressed={collapsed}
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              {collapsed ? (
+                <PanelLeftOpen className="w-4 h-4" />
+              ) : (
+                <PanelLeftClose className="w-4 h-4" />
+              )}
+            </button>
+            <button
+              type="button"
               className="ml-auto lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-text-secondary hover:bg-surface-low btn-press"
               onClick={closeMobile}
               aria-label="Close menu"
@@ -117,22 +130,6 @@ export const AdminSidebar: React.FC = () => {
         </nav>
 
         <div className={`p-3 border-t border-border bg-surface ${compact ? "lg:px-2" : ""}`}>
-          <button
-            type="button"
-            onClick={toggleCollapsed}
-            className="hidden lg:flex w-full items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-text-secondary hover:bg-surface-low hover:text-text-primary btn-press mb-2"
-            aria-pressed={collapsed}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {collapsed ? (
-              <PanelLeftOpen className="w-4 h-4 mx-auto" />
-            ) : (
-              <>
-                <PanelLeftClose className="w-4 h-4" />
-                <span>Collapse</span>
-              </>
-            )}
-          </button>
           <div className={compact ? "lg:hidden" : ""}>
             <UserProfileRow />
           </div>
