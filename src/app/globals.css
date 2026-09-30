@@ -116,3 +116,40 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADMIN PANEL — Design Token Extensions
+   Tokens specific to the admin navigation, sidebar, and chrome components.
+   Intentionally kept separate from the customer-panel tokens above.
+───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Admin surface layers — cool-toned neutral for the dark work environment */
+  --admin-surface-low:  #F4F5F7;   /* Subtle hover bg for nav items, inputs   */
+  --admin-surface-mid:  #E8EAED;   /* Slightly deeper for active/pressed states */
+  --admin-sage:         var(--c-sage);   /* Reuse customer sage for consistency */
+}
+
+@theme {
+  /* Surface layers */
+  --color-surface-low:  var(--admin-surface-low);
+  --color-surface-mid:  var(--admin-surface-mid);
+  --color-sage:         var(--admin-sage);
+}
+
+/* ─── btn-press ── Emil Kowalski micro-interaction (scale on :active) ────── */
+.btn-press {
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.btn-press:active {
+  transform: scale(0.96);
+}
+
+/* ─── label-over ── small uppercase eyebrow label ─────────────────────────── */
+.label-over {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-secondary);
+}
+

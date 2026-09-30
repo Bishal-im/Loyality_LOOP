@@ -3,24 +3,15 @@
 import React from "react";
 import { Search, Bell, HelpCircle } from "lucide-react";
 import { UserProfileRow } from "./UserProfileRow";
-import { useAdminChrome } from "./admin-chrome-context";
+import { Breadcrumbs } from "./Breadcrumbs";
 
 export const AdminHeader: React.FC = () => {
-  
-
   return (
-    <header className="fixed top-0 right-0 left-0 lg:left-[var(--admin-sidebar)] h-16 bg-surface/90 backdrop-blur-xl border-b border-border z-[40] px-3 sm:px-5 lg:px-8 flex items-center justify-between gap-3">
-      <div className="flex items-center gap-2 min-w-0 flex-1">
-        <button
-          type="button"
-          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center text-text-primary hover:bg-surface-low btn-press shrink-0"
-          onClick={toggleMobile}
-          aria-expanded={mobileOpen}
-          aria-controls="admin-sidebar"
-          aria-label="Open menu"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+    <header className="fixed top-0 right-0 left-16 lg:peer-hover:left-60 h-16 bg-surface/90 backdrop-blur-xl border-b border-border z-[40] px-3 sm:px-5 lg:px-8 flex items-center justify-between gap-3 transition-[left] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]">
+      <div className="flex items-center gap-4 min-w-0 flex-1">
+        <div className="hidden lg:block">
+          <Breadcrumbs />
+        </div>
 
         <div className="relative w-full max-w-[400px]">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
@@ -57,5 +48,3 @@ export const AdminHeader: React.FC = () => {
     </header>
   );
 };
-
-
