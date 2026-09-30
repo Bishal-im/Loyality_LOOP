@@ -5,12 +5,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
-  BarChart3,
   Users,
-  Stamp,
   Gift,
-  History,
+  Megaphone,
+  Award,
   UserCheck,
+  Settings,
   Infinity as InfinityIcon,
   ChevronsUpDown,
   Keyboard,
@@ -20,13 +20,13 @@ import { UserProfileRow } from "./UserProfileRow";
 import { useAdminChrome } from "./admin-chrome-context";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin", icon: LayoutDashboard, shortcut: "Alt+1" },
-  { label: "Analytics", href: "/admin/analytics", icon: BarChart3, shortcut: "Alt+2" },
-  { label: "Customers", href: "/admin/customers", icon: Users, shortcut: "Alt+3" },
-  { label: "Stamp Cards", href: "/admin/stamps", icon: Stamp, shortcut: "Alt+4" },
-  { label: "Rewards", href: "/admin/rewards", icon: Gift, shortcut: "Alt+5" },
-  { label: "Transactions", href: "/admin/transactions", icon: History, shortcut: "Alt+6" },
-  { label: "Staff", href: "/admin/staff", icon: UserCheck, shortcut: "Alt+7" },
+  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard, shortcut: "Alt+1" },
+  { label: "Customers", href: "/admin/customers", icon: Users, shortcut: "Alt+2" },
+  { label: "Rewards", href: "/admin/rewards", icon: Gift, shortcut: "Alt+3" },
+  { label: "Campaigns", href: "/admin/campaigns", icon: Megaphone, shortcut: "Alt+4" },
+  { label: "Ranks", href: "/admin/ranks", icon: Award, shortcut: "Alt+5" },
+  { label: "Staff", href: "/admin/staff", icon: UserCheck, shortcut: "Alt+6" },
+  { label: "Settings", href: "/admin/settings", icon: Settings, shortcut: "Alt+7" },
 ];
 
 export const AdminSidebar: React.FC = () => {
@@ -68,8 +68,8 @@ export const AdminSidebar: React.FC = () => {
         type="button"
         aria-hidden={!mobileOpen}
         tabIndex={mobileOpen ? 0 : -1}
-        className={`fixed inset-0 z-[45] bg-c-espresso/40 backdrop-blur-xs transition-opacity duration-200 lg:hidden ${
-          mobileOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-[45] bg-c-espresso/40 transition-[opacity,backdrop-filter] duration-200 lg:hidden ${
+          mobileOpen ? "opacity-100 backdrop-blur-sm" : "opacity-0 backdrop-blur-none pointer-events-none"
         }`}
         onClick={closeMobile}
       />
@@ -124,10 +124,7 @@ export const AdminSidebar: React.FC = () => {
         {/* ── Navigation Items ─────────────────────────────────────────────────── */}
         <nav className="flex-1 px-2.5 py-3 space-y-1 overflow-y-auto overflow-x-hidden">
           {navItems.map((item) => {
-            const isActive =
-              item.href === "/admin"
-                ? pathname === "/admin"
-                : pathname.startsWith(item.href);
+            const isActive = pathname.startsWith(item.href);
             const Icon = item.icon;
 
             return (

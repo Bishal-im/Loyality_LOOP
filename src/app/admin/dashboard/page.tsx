@@ -101,7 +101,7 @@ export default function AdminDashboardPage() {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-1 w-44 rounded-xl bg-white shadow-md z-40 py-1 text-xs border border-[#E4E2DD]">
+              <div className="absolute right-0 mt-1 w-44 rounded-xl bg-white shadow-md z-40 py-1 text-xs border border-[#E4E2DD] [@starting-style]:opacity-0 [@starting-style]:scale-95 opacity-100 scale-100 transition-[opacity,transform] duration-150 ease-out origin-top-right">
                 {periods.map((p) => (
                   <button
                     key={p}
@@ -290,10 +290,11 @@ export default function AdminDashboardPage() {
           <button
             onClick={handleSendAll}
             disabled={allSent}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#173F35] hover:bg-[#002920] disabled:opacity-60 text-white transition-colors text-xs font-semibold shadow-xs whitespace-nowrap"
+            className="btn-press inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#173F35] hover:bg-[#002920] disabled:opacity-60 text-white transition-colors text-xs font-semibold shadow-xs whitespace-nowrap"
             type="button"
           >
-            <Mail className="w-4 h-4" />
+            <Mail className={`w-4 h-4 transition-transform duration-200 ${allSent ? 'translate-x-8 opacity-0' : 'translate-x-0 opacity-100'}`} />
+            <CheckCircle2 className={`w-4 h-4 absolute transition-transform duration-200 ${allSent ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} />
             <span>{allSent ? "All Reminders Sent" : "Send All Reminders (4)"}</span>
           </button>
         </div>
@@ -336,7 +337,7 @@ export default function AdminDashboardPage() {
                 <button
                   onClick={() => handleSendReminder(cust.id)}
                   disabled={sentReminders[cust.id]}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#E4E2DD] text-[#1D2925] hover:bg-[#F8F6F1] hover:text-[#173F35] disabled:opacity-60 transition-colors text-xs font-medium shadow-xs whitespace-nowrap"
+                  className="btn-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#E4E2DD] text-[#1D2925] hover:bg-[#F8F6F1] hover:text-[#173F35] disabled:opacity-60 transition-colors text-xs font-medium shadow-xs whitespace-nowrap"
                   type="button"
                 >
                   <Send className="w-3.5 h-3.5 text-[#718078] group-hover:text-[#173F35]" />
