@@ -89,7 +89,9 @@ export const AdminSidebar: React.FC = () => {
             <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-bg shrink-0 shadow-sm">
               <InfinityIcon className="w-5 h-5 text-white" />
             </div>
-            <div className="flex flex-col min-w-0 whitespace-nowrap opacity-0 lg:group-hover/sidebar:opacity-100 transition-opacity duration-150 delay-75">
+            <div className={`flex flex-col min-w-0 whitespace-nowrap transition-opacity duration-150 delay-75 ${
+              mobileOpen ? "opacity-100" : "opacity-0 lg:group-hover/sidebar:opacity-100"
+            }`}>
               <span className="font-display text-base font-semibold text-text-primary tracking-tight leading-none">
                 ABC Café
               </span>
@@ -113,11 +115,15 @@ export const AdminSidebar: React.FC = () => {
           >
             <div className="flex items-center gap-2 min-w-0">
               <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
-              <span className="text-xs font-semibold text-text-primary truncate whitespace-nowrap opacity-0 lg:group-hover/sidebar:opacity-100 transition-opacity duration-150 delay-75">
+              <span className={`text-xs font-semibold text-text-primary truncate whitespace-nowrap transition-opacity duration-150 delay-75 ${
+                mobileOpen ? "opacity-100" : "opacity-0 lg:group-hover/sidebar:opacity-100"
+              }`}>
                 ABC Café
               </span>
             </div>
-            <ChevronsUpDown className="w-3.5 h-3.5 text-text-secondary group-hover:text-text-primary shrink-0 opacity-0 lg:group-hover/sidebar:opacity-100 transition-opacity duration-150 delay-75" />
+            <ChevronsUpDown className={`w-3.5 h-3.5 text-text-secondary group-hover:text-text-primary shrink-0 transition-opacity duration-150 delay-75 ${
+              mobileOpen ? "opacity-100" : "opacity-0 lg:group-hover/sidebar:opacity-100"
+            }`} />
           </button>
         </div>
 
@@ -148,16 +154,16 @@ export const AdminSidebar: React.FC = () => {
                 <span
                   className={[
                     "flex-1 flex items-center justify-between gap-2 min-w-0",
-                    "opacity-0 lg:group-hover/sidebar:opacity-100",
                     "transition-opacity duration-150 delay-75",
+                    mobileOpen ? "opacity-100" : "opacity-0 lg:group-hover/sidebar:opacity-100",
                   ].join(" ")}
                 >
                   <span className="text-xs whitespace-nowrap leading-none">
                     {item.label}
                   </span>
 
-                  {/* Shortcut badge */}
-                  <kbd className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-surface-low border border-border text-[10px] text-text-secondary font-mono tracking-tight shrink-0">
+                  {/* Shortcut badge — only show on desktop */}
+                  <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 rounded-md bg-surface-low border border-border text-[10px] text-text-secondary font-mono tracking-tight shrink-0">
                     {item.shortcut}
                   </kbd>
                 </span>
@@ -169,7 +175,9 @@ export const AdminSidebar: React.FC = () => {
         {/* ── Footer ─────────────────────────────────────────────────────────── */}
         <div className="border-t border-border px-3 py-3 shrink-0 bg-surface">
           {/* Keyboard hint — visible when expanded */}
-          <div className="flex items-center gap-2 px-1 mb-2.5 opacity-0 lg:group-hover/sidebar:opacity-100 transition-opacity duration-150 delay-75">
+          <div className={`hidden lg:flex items-center gap-2 px-1 mb-2.5 transition-opacity duration-150 delay-75 ${
+            mobileOpen ? "opacity-100" : "opacity-0 lg:group-hover/sidebar:opacity-100"
+          }`}>
             <Keyboard className="w-3.5 h-3.5 text-text-secondary shrink-0" />
             <span className="text-[10px] text-text-secondary font-medium whitespace-nowrap">
               Alt+1–7 to navigate
