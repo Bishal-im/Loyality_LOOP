@@ -34,7 +34,7 @@ export default function AdminCampaignsPage() {
 
         <button
           onClick={() => alert("Create new campaign modal")}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#173F35] hover:bg-[#002920] text-white text-xs font-bold shadow-sm transition-colors self-start sm:self-auto"
+          className="btn-press inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#173F35] hover:bg-[#002920] text-white text-xs font-bold shadow-sm transition-colors self-start sm:self-auto"
           type="button"
         >
           <Plus className="w-4 h-4 stroke-[3]" />
@@ -43,9 +43,9 @@ export default function AdminCampaignsPage() {
       </div>
 
       {/* 2. Two-Column Operational Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* LEFT COLUMN (~60% / col-span-7) — Past Campaigns List */}
-        <div className="lg:col-span-7 flex flex-col gap-4">
+        <div className="lg:col-span-7 flex flex-col gap-4 order-2 lg:order-1">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold text-[#718078] uppercase tracking-wider">
               PAST CAMPAIGNS
@@ -157,7 +157,7 @@ export default function AdminCampaignsPage() {
                 <button
                   type="button"
                   onClick={() => alert("Resume editing draft")}
-                  className="font-bold text-[#173F35] hover:underline inline-flex items-center gap-1"
+                  className="btn-press font-bold text-[#173F35] hover:underline inline-flex items-center gap-1"
                 >
                   <span>Resume Edit</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -168,7 +168,7 @@ export default function AdminCampaignsPage() {
         </div>
 
         {/* RIGHT COLUMN (~40% / col-span-5) — Create Email Campaign Form Panel */}
-        <div className="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-[#E4E2DD] flex flex-col gap-5">
+        <div className="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm border border-[#E4E2DD] flex flex-col gap-5 order-1 lg:order-2 lg:sticky lg:top-6">
           {/* Card Header */}
           <div className="flex items-center justify-between border-b border-[#E4E2DD] pb-4">
             <div className="flex items-center gap-3">
@@ -308,7 +308,7 @@ export default function AdminCampaignsPage() {
           <div className="flex flex-col gap-2 pt-2">
             <button
               onClick={() => alert("Campaign dispatched to recipient list")}
-              className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#173F35] hover:bg-[#002920] text-white text-xs font-bold shadow-sm transition-colors"
+              className="btn-press w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#173F35] hover:bg-[#002920] text-white text-xs font-bold shadow-sm transition-colors"
               type="button"
             >
               <Send className="w-4 h-4 fill-white" />
@@ -317,7 +317,7 @@ export default function AdminCampaignsPage() {
 
             <button
               onClick={() => alert("Saved as draft")}
-              className="text-xs text-[#718078] hover:text-[#1D2925] font-medium text-center py-1 transition-colors"
+              className="btn-press text-xs text-[#718078] hover:text-[#1D2925] font-medium text-center py-1 transition-colors"
               type="button"
             >
               Save as draft instead
