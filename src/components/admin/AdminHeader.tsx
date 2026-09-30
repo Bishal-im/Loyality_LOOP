@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { Search, Bell, HelpCircle } from "lucide-react";
+import { Search, Bell, HelpCircle, Menu } from "lucide-react";
 import { UserProfileRow } from "./UserProfileRow";
 import { useAdminChrome } from "./admin-chrome-context";
 
 export const AdminHeader: React.FC = () => {
-  
+  const { mobileOpen, toggleMobile } = useAdminChrome();
 
   return (
     <header className="fixed top-0 right-0 left-0 lg:left-[var(--admin-sidebar)] h-16 bg-surface/90 backdrop-blur-xl border-b border-border z-[40] px-3 sm:px-5 lg:px-8 flex items-center justify-between gap-3">
