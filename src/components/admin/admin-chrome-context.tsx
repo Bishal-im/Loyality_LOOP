@@ -11,12 +11,19 @@ export interface AdminChromeValue {
   toggleCollapsed: () => void;
 }
 
-export const AdminChromeContext = createContext<AdminChromeValue | null>(null);
+const defaultValue: AdminChromeValue = {
+  mobileOpen: false,
+  collapsed: false,
+  openMobile: () => {},
+  closeMobile: () => {},
+  toggleMobile: () => {},
+  toggleCollapsed: () => {},
+};
+
+export const AdminChromeContext = createContext<AdminChromeValue>(defaultValue);
 
 export function useAdminChrome() {
   const value = useContext(AdminChromeContext);
-  if (!value) {
-    throw new Error("useAdminChrome must be used inside AdminChrome");
-  }
-  return value;
+  return value || defaultValue;
 }
+
