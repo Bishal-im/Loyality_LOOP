@@ -11,8 +11,7 @@ interface CustomerRecord {
   phone: string;
   category: "all" | "new" | "regular" | "at-risk" | "vip";
   statusLabel: string;
-  statusBg: string;
-  statusText: string;
+  statusClass: string;
   firstVisit: string;
   lastVisit: string;
   totalVisits: number;
@@ -32,8 +31,7 @@ export default function AdminCustomersPage() {
       phone: "+977 984-129384",
       category: "at-risk",
       statusLabel: "At Risk",
-      statusBg: "bg-[#C25953]/10",
-      statusText: "text-[#C25953]",
+      statusClass: "bg-[#FCE8E6] text-[#C5221F]",
       firstVisit: "Aug 1",
       lastVisit: "Sep 17",
       totalVisits: 8,
@@ -46,8 +44,7 @@ export default function AdminCustomersPage() {
       phone: "+977 981-840291",
       category: "regular",
       statusLabel: "Regular",
-      statusBg: "bg-[#173F35]/10",
-      statusText: "text-[#173F35]",
+      statusClass: "bg-[#E6F4EA] text-[#137333]",
       firstVisit: "Aug 5",
       lastVisit: "Sep 20",
       totalVisits: 14,
@@ -60,8 +57,7 @@ export default function AdminCustomersPage() {
       phone: "+977 980-332145",
       category: "at-risk",
       statusLabel: "At Risk",
-      statusBg: "bg-[#C25953]/10",
-      statusText: "text-[#C25953]",
+      statusClass: "bg-[#FCE8E6] text-[#C5221F]",
       firstVisit: "Aug 10",
       lastVisit: "Sep 16",
       totalVisits: 6,
@@ -74,8 +70,7 @@ export default function AdminCustomersPage() {
       phone: "+977 985-110928",
       category: "at-risk",
       statusLabel: "At Risk",
-      statusBg: "bg-[#C25953]/10",
-      statusText: "text-[#C25953]",
+      statusClass: "bg-[#FCE8E6] text-[#C5221F]",
       firstVisit: "Jul 28",
       lastVisit: "Sep 10",
       totalVisits: 11,
@@ -88,8 +83,7 @@ export default function AdminCustomersPage() {
       phone: "+977 982-990142",
       category: "vip",
       statusLabel: "VIP",
-      statusBg: "bg-[#F8F6F1] border border-[#D6A85F]",
-      statusText: "text-[#1D2925]",
+      statusClass: "bg-[#FEF7E0] text-[#B06000] border border-[#FEEFC3]",
       firstVisit: "Jun 15",
       lastVisit: "Sep 22",
       totalVisits: 26,
@@ -103,8 +97,7 @@ export default function AdminCustomersPage() {
       phone: "+977 984-771239",
       category: "new",
       statusLabel: "New",
-      statusBg: "bg-[#F8F6F1]",
-      statusText: "text-[#718078]",
+      statusClass: "bg-[#E8F0FE] text-[#1A73E8]",
       firstVisit: "Sep 18",
       lastVisit: "Sep 18",
       totalVisits: 1,
@@ -122,67 +115,68 @@ export default function AdminCustomersPage() {
   });
 
   return (
-    <div className="flex flex-col w-full max-w-7xl mx-auto gap-6">
-      {/* Main View Container */}
-      <div className="flex flex-col bg-white rounded-2xl shadow-sm border border-[#E4E2DD] overflow-hidden">
-        {/* Header Block: Title, Search, and Segmented Filter Bar */}
-        <div className="p-6 flex flex-col gap-4 bg-white border-b border-[#E4E2DD]">
-          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#1D2925] tracking-tight">
-                  Customers
-                </h1>
-                <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full bg-[#F8F6F1] text-xs font-semibold text-[#718078]">
-                  Live
-                </span>
-              </div>
-              <p className="text-xs text-[#718078] mt-1 font-medium">1,248 total customers</p>
+    <div className="flex flex-col w-full max-w-[1440px] mx-auto gap-6">
+      {/* 1. Header Row */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-[24px] font-semibold text-[#18181B] tracking-tight leading-tight">
+              Customers
+            </h1>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#E6F4EA] text-[#137333] text-[11px] font-medium gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#137333] animate-pulse" />
+              Live
+            </span>
+          </div>
+          <p className="text-[14px] font-normal text-[#71717A] mt-0.5">1,248 total customers</p>
+        </div>
+      </div>
+
+      {/* 2. Main Customers Table Card */}
+      <div className="flex flex-col bg-white rounded-[16px] shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-150 ease-out">
+        {/* Header Control Toolbar */}
+        <div className="p-6 flex flex-col gap-4 border-b border-[#E5E5E5] bg-white">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            {/* Search Input */}
+            <div className="relative flex items-center w-full lg:max-w-[320px]">
+              <Search className="w-4 h-4 absolute left-3 text-[#71717A] pointer-events-none" strokeWidth={1.5} />
+              <input
+                type="text"
+                placeholder="Search by name or phone..."
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 bg-[#F4F4F5] text-[#18181B] placeholder:text-[#71717A] text-xs rounded-xl border border-[#E5E5E5] focus:outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+              />
             </div>
 
-            {/* Controls Right Header Row */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* Search Field */}
-              <div className="relative flex items-center w-full sm:min-w-[220px] sm:w-auto">
-                <Search className="w-4 h-4 absolute left-3 text-[#718078] pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Search by name or phone"
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 bg-[#F8F6F1] text-[#1D2925] placeholder:text-[#718078] text-xs rounded-xl border border-transparent focus:outline-none focus:border-[#173F35] focus:bg-white transition-colors"
-                />
-              </div>
-
-              {/* Segmented Filter Control Pills */}
-              <div className="inline-flex items-center p-1 bg-[#F8F6F1] rounded-xl gap-1 overflow-x-auto max-w-full">
-                {(["all", "new", "regular", "at-risk", "vip"] as const).map((segment) => (
-                  <button
-                    key={segment}
-                    onClick={() => setActiveSegment(segment)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                      activeSegment === segment
-                        ? "bg-[#173F35] text-white shadow-sm"
-                        : "text-[#718078] hover:text-[#1D2925]"
-                    }`}
-                    type="button"
-                  >
-                    {segment === "at-risk" ? "At Risk" : segment === "vip" ? "VIP" : segment === "all" ? "All" : segment === "new" ? "New" : "Regular"}
-                  </button>
-                ))}
-              </div>
+            {/* Segmented Filter Control Pills */}
+            <div className="inline-flex items-center p-1 bg-[#F4F4F5] rounded-xl border border-[#E5E5E5] gap-1 overflow-x-auto max-w-full">
+              {(["all", "new", "regular", "at-risk", "vip"] as const).map((segment) => (
+                <button
+                  key={segment}
+                  onClick={() => setActiveSegment(segment)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
+                    activeSegment === segment
+                      ? "bg-[#18181B] text-white font-semibold shadow-xs"
+                      : "text-[#71717A] hover:text-[#18181B] hover:bg-[#E8EAED]"
+                  }`}
+                  type="button"
+                >
+                  {segment === "at-risk" ? "At Risk" : segment === "vip" ? "VIP" : segment === "all" ? "All" : segment === "new" ? "New" : "Regular"}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Row 2: Filter Button below Search Input */}
+          {/* Filter options button */}
           <div className="flex items-center justify-start">
             <button
               onClick={() => alert("Filter options")}
-              className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] transition-colors border border-[#E4E2DD]"
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#F4F4F5] hover:bg-[#E8EAED] active:bg-[#E5E5E5] text-[#18181B] border border-[#E5E5E5] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               type="button"
               title="Filter settings"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-[#718078]" />
+              <SlidersHorizontal className="w-4 h-4 text-[#71717A]" strokeWidth={1.5} />
             </button>
           </div>
         </div>
@@ -191,7 +185,7 @@ export default function AdminCustomersPage() {
         <div className="w-full overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-[#F5F3EE] text-[#718078] text-[11px] font-semibold uppercase tracking-wider border-b border-[#E4E2DD]">
+              <tr className="bg-[#F4F4F5] text-[#71717A] text-[11px] font-medium uppercase tracking-[0.06em] border-b border-[#E5E5E5]">
                 <th className="px-6 py-3.5">NAME</th>
                 <th className="px-4 py-3.5">STATUS</th>
                 <th className="px-4 py-3.5">FIRST VISIT</th>
@@ -201,27 +195,27 @@ export default function AdminCustomersPage() {
                 <th className="px-6 py-3.5 text-right w-12" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#E4E2DD]">
+            <tbody className="divide-y divide-[#E5E5E5]">
               {filteredCustomers.map((cust) => (
                 <tr
                   key={cust.id}
-                  className="hover:bg-[#F5F3EE] transition-colors cursor-pointer group"
+                  className="hover:bg-[#F4F4F5]/70 transition-colors cursor-pointer group"
                 >
                   <td className="px-6 py-3.5 whitespace-nowrap">
                     <Link href={`/admin/customers/${cust.id}`} className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-[#E4E2DD] text-[#1D2925] flex items-center justify-center text-xs font-bold flex-shrink-0">
+                      <div className="w-9 h-9 rounded-full bg-[#27272A] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
                         {cust.initials}
                       </div>
                       <div className="flex flex-col min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-semibold text-[#1D2925] text-sm group-hover:text-[#173F35] transition-colors">
+                          <span className="font-semibold text-[#18181B] text-[14px] group-hover:text-primary transition-colors">
                             {cust.name}
                           </span>
                           {cust.isVipStar && (
-                            <Star className="w-3.5 h-3.5 text-[#D6A85F] fill-[#D6A85F]" />
+                            <Star className="w-3.5 h-3.5 text-[#B06000] fill-[#B06000]" strokeWidth={1.5} />
                           )}
                         </div>
-                        <span className="text-[11px] text-[#718078] mt-0.5 font-normal">
+                        <span className="text-xs text-[#71717A] mt-0.5 font-normal">
                           {cust.phone}
                         </span>
                       </div>
@@ -230,31 +224,31 @@ export default function AdminCustomersPage() {
 
                   <td className="px-4 py-3.5 whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${cust.statusBg} ${cust.statusText}`}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${cust.statusClass}`}
                     >
                       {cust.statusLabel}
                     </span>
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-[#718078] font-medium">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-[#71717A] text-xs font-normal">
                     {cust.firstVisit}
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-[#718078] font-medium">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-[#71717A] text-xs font-normal">
                     {cust.lastVisit}
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-bold text-[#1D2925] text-sm">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-bold text-[#18181B] text-[14px] tabular-nums">
                     {cust.totalVisits}
                   </td>
 
-                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-bold text-[#1D2925] text-sm">
+                  <td className="px-4 py-3.5 whitespace-nowrap text-right font-bold text-[#18181B] text-[14px] tabular-nums">
                     {cust.rewardsEarned}
                   </td>
 
                   <td className="px-6 py-3.5 whitespace-nowrap text-right">
                     <Link href={`/admin/customers/${cust.id}`}>
-                      <ChevronRight className="w-4 h-4 text-[#718078] group-hover:text-[#173F35] transition-colors" />
+                      <ChevronRight className="w-4 h-4 text-[#71717A] group-hover:text-[#18181B] transition-colors" strokeWidth={1.5} />
                     </Link>
                   </td>
                 </tr>
@@ -264,11 +258,11 @@ export default function AdminCustomersPage() {
         </div>
 
         {/* Card Footer / Pagination Area */}
-        <div className="px-6 py-4 bg-white border-t border-[#E4E2DD] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-1.5 text-xs text-[#718078]">
+        <div className="px-6 py-4 bg-[#F4F4F5] border-t border-[#E5E5E5] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#71717A]">
+          <div className="flex items-center gap-1.5">
             <span>
-              Showing <span className="font-bold text-[#1D2925]">{filteredCustomers.length}</span> of{" "}
-              <span className="font-bold text-[#1D2925]">1,248</span> customers
+              Showing <span className="font-semibold text-[#18181B]">{filteredCustomers.length}</span> of{" "}
+              <span className="font-semibold text-[#18181B]">1,248</span> customers
             </span>
           </div>
 
@@ -276,35 +270,35 @@ export default function AdminCustomersPage() {
           <div className="flex items-center gap-2">
             <button
               disabled
-              className="px-3 py-1.5 rounded-xl bg-[#F8F6F1] text-[#9AA8A3] text-xs font-semibold cursor-not-allowed opacity-70 flex items-center gap-1"
+              className="btn-press px-3.5 py-2 rounded-xl bg-white border border-[#E5E5E5] text-[#18181B] disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium shadow-xs flex items-center gap-1.5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               type="button"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-3.5 h-3.5 text-[#71717A]" strokeWidth={1.5} />
               <span>Previous</span>
             </button>
 
-            <div className="hidden sm:flex items-center gap-1">
+            <div className="hidden sm:flex items-center gap-1.5">
               <button
-                className="w-8 h-8 rounded-xl bg-[#173F35] text-white text-xs font-bold flex items-center justify-center shadow-sm"
+                className="w-9 h-9 rounded-xl bg-[#18181B] text-white text-xs font-bold flex items-center justify-center shadow-xs"
                 type="button"
               >
                 1
               </button>
               <button
-                className="w-8 h-8 rounded-xl bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] text-xs font-semibold flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-xl bg-white border border-[#E5E5E5] hover:bg-[#E8EAED] active:bg-[#E5E5E5] text-[#18181B] text-xs font-medium flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 type="button"
               >
                 2
               </button>
               <button
-                className="w-8 h-8 rounded-xl bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] text-xs font-semibold flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-xl bg-white border border-[#E5E5E5] hover:bg-[#E8EAED] active:bg-[#E5E5E5] text-[#18181B] text-xs font-medium flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 type="button"
               >
                 3
               </button>
-              <span className="px-1 text-[#718078] text-xs font-bold">...</span>
+              <span className="px-1 text-[#71717A] text-xs font-medium">...</span>
               <button
-                className="w-8 h-8 rounded-xl bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] text-xs font-semibold flex items-center justify-center transition-colors"
+                className="w-9 h-9 rounded-xl bg-white border border-[#E5E5E5] hover:bg-[#E8EAED] active:bg-[#E5E5E5] text-[#18181B] text-xs font-medium flex items-center justify-center transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 type="button"
               >
                 208
@@ -312,11 +306,11 @@ export default function AdminCustomersPage() {
             </div>
 
             <button
-              className="px-3 py-1.5 rounded-xl bg-[#F8F6F1] hover:bg-[#E4E2DD] text-[#1D2925] text-xs font-semibold transition-colors flex items-center gap-1"
+              className="btn-press px-3.5 py-2 rounded-xl bg-white border border-[#E5E5E5] hover:bg-[#E8EAED] active:bg-[#E5E5E5] text-[#18181B] text-xs font-medium transition-all shadow-xs flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               type="button"
             >
               <span>Next</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-[#71717A]" strokeWidth={1.5} />
             </button>
           </div>
         </div>
@@ -324,4 +318,3 @@ export default function AdminCustomersPage() {
     </div>
   );
 }
-

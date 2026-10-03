@@ -11,7 +11,6 @@ export interface Customer {
   rewardsEarned: number;
   lastVisit: string;
   status: 'Active' | 'Inactive';
-  rank?: 'Bronze' | 'Silver' | 'Gold' | 'Platinum';
   avatar?: string;
   notes?: string;
 }
@@ -82,7 +81,6 @@ export const MOCK_CUSTOMERS: Customer[] = [
     rewardsEarned: 3,
     lastVisit: "Today, 11:30 AM",
     status: "Active",
-    rank: "Silver",
     notes: "Prefers oat milk latte."
   },
   {
@@ -97,8 +95,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
     maxStamps: 10,
     rewardsEarned: 1,
     lastVisit: "Yesterday, 4:15 PM",
-    status: "Active",
-    rank: "Bronze"
+    status: "Active"
   },
   {
     id: "cust_103",
@@ -112,8 +109,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
     maxStamps: 10,
     rewardsEarned: 4,
     lastVisit: "24 Sep 2024",
-    status: "Active",
-    rank: "Gold"
+    status: "Active"
   },
   {
     id: "cust_104",

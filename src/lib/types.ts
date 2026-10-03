@@ -11,7 +11,6 @@ export interface Customer {
   rewardsEarned: number;
   lastVisit: string;
   status: "Active" | "Inactive";
-  rank?: "Bronze" | "Silver" | "Gold" | "Platinum";
   avatar?: string;
   notes?: string;
 }
@@ -64,16 +63,6 @@ export interface BusinessSettings {
   stampsPerCard: number;
   businessHours: string;
   logoUrl?: string;
-}
-
-export interface Rank {
-  id: string;
-  name: string;
-  minStamps: number;
-  color: string;
-  icon?: string;
-  description?: string;
-  benefits?: string[];
 }
 
 export interface BirthdayEvent {

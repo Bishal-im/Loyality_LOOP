@@ -12,7 +12,7 @@ import {
   CheckCircle2,
   Mail,
   Send,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 
 export default function AdminDashboardPage() {
@@ -28,7 +28,6 @@ export default function AdminDashboardPage() {
       id: 1,
       name: "Rahul Thapa",
       initials: "RT",
-      avatarBg: "bg-[#173F35] text-white",
       cadence: "Normally visits every 8 days",
       visits: "8 total visits",
       favorite: "Favorite: Cold Brew & Veg Momo",
@@ -38,7 +37,6 @@ export default function AdminDashboardPage() {
       id: 2,
       name: "Sita Maya",
       initials: "SM",
-      avatarBg: "bg-[#E4E2DD] text-[#1D2925]",
       cadence: "Normally visits every 5 days",
       visits: "14 total visits",
       favorite: "Favorite: Masala Chai & Croissant",
@@ -48,7 +46,6 @@ export default function AdminDashboardPage() {
       id: 3,
       name: "Aarav Khan",
       initials: "AK",
-      avatarBg: "bg-[#002920] text-white",
       cadence: "Normally visits every 7 days",
       visits: "6 total visits",
       favorite: "Favorite: Flat White",
@@ -58,7 +55,6 @@ export default function AdminDashboardPage() {
       id: 4,
       name: "Pooja Sharma",
       initials: "PS",
-      avatarBg: "bg-[#E4E2DD] text-[#1D2925]",
       cadence: "Normally visits every 10 days",
       visits: "11 total visits",
       favorite: "Favorite: Americano & Lemon Cake",
@@ -82,26 +78,26 @@ export default function AdminDashboardPage() {
       {/* 1. Header Row */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-display font-medium text-[#1D2925] tracking-tight">
+          <h1 className="text-[24px] font-semibold text-[#18181B] tracking-tight leading-tight">
             Dashboard
           </h1>
-          <p className="text-xs font-normal text-[#718078] mt-1">Today's overview</p>
+          <p className="text-[14px] font-normal text-[#71717A] mt-0.5">Today's overview</p>
         </div>
 
-        {/* Date/Period Selector Pill */}
+        {/* Date/Period Selector & Refresh Pill */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <div className="relative inline-block text-left">
             <button
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white text-[#1D2925] shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:bg-[#F8F6F1] transition-colors text-xs font-medium border border-[#E4E2DD]"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#F4F4F5] text-[#18181B] hover:bg-[#E8EAED] active:bg-[#E5E5E5] transition-all text-xs font-medium border border-[#E5E5E5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               type="button"
             >
-              <Calendar className="w-4 h-4 text-[#718078]" />
+              <Calendar className="w-4 h-4 text-[#71717A]" strokeWidth={1.5} />
               <span>{period}</span>
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-1 w-44 rounded-xl bg-white shadow-md z-40 py-1 text-xs border border-[#E4E2DD] [@starting-style]:opacity-0 [@starting-style]:scale-95 opacity-100 scale-100 transition-[opacity,transform] duration-150 ease-out origin-top-right">
+              <div className="absolute right-0 mt-1.5 w-44 rounded-xl bg-white shadow-lg z-40 py-1 text-xs border border-[#E5E5E5]">
                 {periods.map((p) => (
                   <button
                     key={p}
@@ -109,10 +105,10 @@ export default function AdminDashboardPage() {
                       setPeriod(p);
                       setDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-3.5 py-2 hover:bg-[#F8F6F1] flex items-center justify-between ${
+                    className={`w-full text-left px-3.5 py-2 hover:bg-[#F4F4F5] transition-colors flex items-center justify-between ${
                       period === p
-                        ? "text-[#173F35] font-semibold"
-                        : "text-[#1D2925] font-normal"
+                        ? "text-[#18181B] font-semibold bg-[#F4F4F5]/60"
+                        : "text-[#71717A] font-normal"
                     }`}
                   >
                     <span>{p}</span>
@@ -124,91 +120,99 @@ export default function AdminDashboardPage() {
 
           <button
             onClick={() => alert("Refreshed live data")}
-            className="p-2 w-9 h-9 rounded-full bg-white text-[#718078] hover:text-[#1D2925] shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-center border border-[#E4E2DD] transition-colors"
+            className="p-2 w-9 h-9 rounded-full bg-[#F4F4F5] text-[#71717A] hover:text-[#18181B] hover:bg-[#E8EAED] active:bg-[#E5E5E5] flex items-center justify-center border border-[#E5E5E5] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             title="Refresh Live Data"
             type="button"
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-4 h-4" strokeWidth={1.5} />
           </button>
         </div>
       </div>
 
-      {/* 2. Metric Row (4 Uniform KPI Cards with 28px bold figures) */}
+      {/* 2. Metric Row (4 Uniform KPI Cards with 28px bold neutral figures) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
         {/* Metric 1: Total Customers */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#E4E2DD] flex flex-col justify-between min-h-[110px]">
+        <div className="bg-white rounded-[16px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] flex flex-col justify-between min-h-[120px] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all duration-150 ease-out">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-medium text-[#718078] uppercase tracking-wider">
+            <span className="text-[11px] font-medium text-[#71717A] uppercase tracking-[0.06em]">
               Total Customers
             </span>
-            <Users className="w-4 h-4 text-[#718078]" />
+            <div className="w-8 h-8 rounded-lg bg-[#F4F4F5] border border-[#E5E5E5]/60 flex items-center justify-center text-[#71717A] shrink-0">
+              <Users className="w-4 h-4" strokeWidth={1.5} />
+            </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-[28px] font-bold text-[#1D2925] leading-tight">
+            <span className="text-[28px] font-bold text-[#18181B] leading-tight tabular-nums">
               1,248
             </span>
           </div>
-          <div className="mt-3 flex items-center gap-1 text-xs font-medium text-[#173F35]">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#173F35]/10">
-              <TrendingUp className="w-3 h-3 mr-1" />
+          <div className="mt-3 flex items-center gap-1">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#E6F4EA] text-[#137333] text-xs font-medium">
+              <TrendingUp className="w-3 h-3 mr-1" strokeWidth={1.5} />
               +32 this month
             </span>
           </div>
         </div>
 
         {/* Metric 2: New Customers */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#E4E2DD] flex flex-col justify-between min-h-[110px]">
+        <div className="bg-white rounded-[16px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] flex flex-col justify-between min-h-[120px] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all duration-150 ease-out">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-medium text-[#718078] uppercase tracking-wider">
+            <span className="text-[11px] font-medium text-[#71717A] uppercase tracking-[0.06em]">
               New Customers
             </span>
-            <UserPlus className="w-4 h-4 text-[#718078]" />
+            <div className="w-8 h-8 rounded-lg bg-[#F4F4F5] border border-[#E5E5E5]/60 flex items-center justify-center text-[#71717A] shrink-0">
+              <UserPlus className="w-4 h-4" strokeWidth={1.5} />
+            </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-[28px] font-bold text-[#1D2925] leading-tight">
+            <span className="text-[28px] font-bold text-[#18181B] leading-tight tabular-nums">
               17
             </span>
           </div>
-          <div className="mt-3 flex items-center gap-1 text-xs font-medium text-[#173F35]">
-            <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#173F35]/10">
-              <TrendingUp className="w-3 h-3 mr-1" />
+          <div className="mt-3 flex items-center gap-1">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-[#E6F4EA] text-[#137333] text-xs font-medium">
+              <TrendingUp className="w-3 h-3 mr-1" strokeWidth={1.5} />
               +4 vs yesterday
             </span>
           </div>
         </div>
 
         {/* Metric 3: Returning Customers */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#E4E2DD] flex flex-col justify-between min-h-[110px]">
+        <div className="bg-white rounded-[16px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] flex flex-col justify-between min-h-[120px] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all duration-150 ease-out">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-medium text-[#718078] uppercase tracking-wider">
+            <span className="text-[11px] font-medium text-[#71717A] uppercase tracking-[0.06em]">
               Returning Customers
             </span>
-            <RotateCcw className="w-4 h-4 text-[#718078]" />
+            <div className="w-8 h-8 rounded-lg bg-[#F4F4F5] border border-[#E5E5E5]/60 flex items-center justify-center text-[#71717A] shrink-0">
+              <RotateCcw className="w-4 h-4" strokeWidth={1.5} />
+            </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-[28px] font-bold text-[#1D2925] leading-tight">
+            <span className="text-[28px] font-bold text-[#18181B] leading-tight tabular-nums">
               84
             </span>
           </div>
-          <div className="mt-3 text-xs text-[#718078] font-normal">
+          <div className="mt-3 text-xs text-[#71717A] font-normal">
             68% of today's visits
           </div>
         </div>
 
         {/* Metric 4: Rewards Redeemed */}
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#E4E2DD] flex flex-col justify-between min-h-[110px]">
+        <div className="bg-white rounded-[16px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] flex flex-col justify-between min-h-[120px] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all duration-150 ease-out">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-medium text-[#718078] uppercase tracking-wider">
+            <span className="text-[11px] font-medium text-[#71717A] uppercase tracking-[0.06em]">
               Rewards Redeemed
             </span>
-            <Gift className="w-4 h-4 text-[#718078]" />
+            <div className="w-8 h-8 rounded-lg bg-[#F4F4F5] border border-[#E5E5E5]/60 flex items-center justify-center text-[#71717A] shrink-0">
+              <Gift className="w-4 h-4" strokeWidth={1.5} />
+            </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-[28px] font-bold text-[#1D2925] leading-tight">
+            <span className="text-[28px] font-bold text-[#18181B] leading-tight tabular-nums">
               12
             </span>
           </div>
-          <div className="mt-3 text-xs text-[#718078] font-normal truncate">
+          <div className="mt-3 text-xs text-[#71717A] font-normal truncate">
             Free Veg Momo (8), NPR 500 (4)
           </div>
         </div>
@@ -216,36 +220,36 @@ export default function AdminDashboardPage() {
 
       {/* 3. Middle Section: Repeat Rate Card */}
       <div className="w-full">
-        <div className="bg-white rounded-2xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#E4E2DD] flex flex-col justify-between w-full">
+        <div className="bg-white rounded-[16px] p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] flex flex-col justify-between w-full hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all duration-150 ease-out">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-base font-semibold text-[#1D2925]">
+              <span className="text-[15px] font-semibold text-[#18181B]">
                 Repeat Rate
               </span>
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#173F35]/10 text-[#173F35] text-xs font-semibold">
-                <TrendingUp className="w-3.5 h-3.5 mr-1" />
+              <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#E6F4EA] text-[#137333] text-xs font-semibold">
+                <TrendingUp className="w-3.5 h-3.5 mr-1" strokeWidth={1.5} />
                 +4.2%
               </span>
             </div>
             <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-[28px] font-bold text-[#1D2925] leading-none">
+              <span className="text-[28px] font-bold text-[#18181B] leading-none tabular-nums">
                 68%
               </span>
-              <span className="text-xs text-[#718078] font-medium">cohort retention</span>
+              <span className="text-xs text-[#71717A] font-normal">cohort retention</span>
             </div>
 
             {/* Progress Bar & Benchmark Scale */}
             <div className="mt-5">
-              <div className="w-full bg-[#F8F6F1] rounded-full h-3 overflow-hidden flex">
+              <div className="w-full bg-[#F4F4F5] border border-[#E5E5E5] rounded-full h-3 overflow-hidden flex p-0.5">
                 <div
-                  className="bg-[#173F35] h-full rounded-full transition-all duration-700"
+                  className="bg-gradient-to-r from-[#1b8a4b] to-[#107C41] h-full rounded-full transition-all duration-700 shadow-xs"
                   style={{ width: "68%" }}
                 />
               </div>
-              <div className="relative w-full mt-2 h-4 text-[#718078] text-[10px] font-medium">
+              <div className="relative w-full mt-2 h-4 text-[#71717A] text-[10px] font-medium">
                 <div className="absolute left-0">0%</div>
                 <div className="absolute left-[55%] -translate-x-1/2 flex flex-col items-center">
-                  <span className="w-0.5 h-1.5 bg-[#E4E2DD] mb-0.5" />
+                  <span className="w-0.5 h-1.5 bg-[#E5E5E5] mb-0.5" />
                   <span>55% Target</span>
                 </div>
                 <div className="absolute right-0">100%</div>
@@ -253,13 +257,13 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="mt-5 pt-4 bg-[#F5F3EE] rounded-xl p-4 flex items-start gap-3 border border-[#E4E2DD]">
-            <CheckCircle2 className="w-5 h-5 text-[#173F35] mt-0.5 flex-shrink-0" />
-            <div className="flex flex-col text-xs">
-              <span className="font-semibold text-[#1D2925]">
+          <div className="mt-5 bg-[#F4F4F5] rounded-[12px] p-4 flex items-start gap-3 border border-[#E5E5E5]">
+            <CheckCircle2 className="w-5 h-5 text-[#137333] mt-0.5 shrink-0" strokeWidth={1.5} />
+            <div className="flex flex-col text-[14px]">
+              <span className="font-semibold text-[#18181B]">
                 Healthy café benchmark exceeded
               </span>
-              <span className="text-[#718078] mt-0.5 font-normal leading-relaxed">
+              <span className="text-[#71717A] mt-0.5 font-normal leading-relaxed">
                 Target threshold is &gt;55%. Your retention engine is outperforming
                 regional specialty cafés by 13 percentage points.
               </span>
@@ -269,78 +273,76 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* 4. Centerpiece Section: Customers to Bring Back */}
-      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-[#E4E2DD] flex flex-col overflow-hidden w-full">
+      <div className="bg-white rounded-[16px] shadow-[0_1px_2px_rgba(0,0,0,0.04)] border border-[#E5E5E5] flex flex-col overflow-hidden w-full hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px] transition-all duration-150 ease-out">
         {/* Header of Table Card */}
-        <div className="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#E4E2DD]">
+        <div className="p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#E5E5E5]">
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold text-[#1D2925]">
+              <h2 className="text-[15px] font-semibold text-[#18181B]">
                 Customers to Bring Back
               </h2>
-              <span className="px-2.5 py-0.5 rounded-full bg-[#C25953]/10 text-[#C25953] text-xs font-semibold">
+              <span className="px-2.5 py-0.5 rounded-full bg-[#FCE8E6] text-[#C5221F] text-xs font-semibold">
                 4 overdue
               </span>
             </div>
-            <p className="text-xs text-[#718078] mt-1 font-normal">
+            <p className="text-[14px] text-[#71717A] mt-1 font-normal">
               Customers overdue for their usual visit cadence based on lifetime purchase patterns
             </p>
           </div>
 
-          {/* Batch Action Button */}
+          {/* Batch Action Primary Button (uses accent color) */}
           <button
             onClick={handleSendAll}
             disabled={allSent}
-            className="btn-press inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#173F35] hover:bg-[#002920] disabled:opacity-60 text-white transition-colors text-xs font-semibold shadow-xs whitespace-nowrap"
+            className="btn-press inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-60 text-white transition-all text-xs font-semibold shadow-xs whitespace-nowrap"
             type="button"
           >
-            <Mail className={`w-4 h-4 transition-transform duration-200 ${allSent ? 'translate-x-8 opacity-0' : 'translate-x-0 opacity-100'}`} />
-            <CheckCircle2 className={`w-4 h-4 absolute transition-transform duration-200 ${allSent ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} />
+            <Mail className={`w-4 h-4 transition-transform duration-200 ${allSent ? 'translate-x-8 opacity-0' : 'translate-x-0 opacity-100'}`} strokeWidth={1.5} />
+            <CheckCircle2 className={`w-4 h-4 absolute transition-transform duration-200 ${allSent ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'}`} strokeWidth={1.5} />
             <span>{allSent ? "All Reminders Sent" : "Send All Reminders (4)"}</span>
           </button>
         </div>
 
-        {/* Customer Rows List (min 56px height per row, 16px cell padding) */}
-        <div className="divide-y divide-[#E4E2DD]">
+        {/* Customer Rows List */}
+        <div className="divide-y divide-[#E5E5E5]">
           {overdueCustomers.map((cust) => (
             <div
               key={cust.id}
-              className="px-6 py-4 min-h-[56px] hover:bg-[#F5F3EE] transition-colors flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 group"
+              className="px-6 py-4 min-h-[56px] hover:bg-[#F4F4F5] transition-colors flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 group"
             >
               <div className="flex items-center gap-4 min-w-0">
-                <div
-                  className={`w-10 h-10 rounded-full ${cust.avatarBg} flex items-center justify-center text-xs font-bold flex-shrink-0 shadow-xs`}
-                >
+                <div className="w-10 h-10 rounded-full bg-[#27272A] text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-xs">
                   {cust.initials}
                 </div>
                 <div className="flex flex-col min-w-0">
-                  <span className="text-sm font-semibold text-[#1D2925] truncate">
+                  <span className="text-[14px] font-semibold text-[#18181B] truncate">
                     {cust.name}
                   </span>
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-[#718078] mt-0.5 font-normal">
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-[#71717A] mt-0.5 font-normal">
                     <span>{cust.cadence}</span>
                     <span>•</span>
                     <span>{cust.visits}</span>
                     <span>•</span>
-                    <span className="font-medium text-[#1D2925]">
+                    <span className="font-medium text-[#18181B]">
                       {cust.favorite}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between lg:justify-end gap-4 flex-shrink-0">
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#C25953]/10 text-[#C25953] text-xs font-semibold">
-                  <AlertCircle className="w-3.5 h-3.5" />
+              <div className="flex items-center justify-between lg:justify-end gap-4 shrink-0">
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCE8E6] text-[#C5221F] text-xs font-semibold">
+                  <AlertCircle className="w-3.5 h-3.5" strokeWidth={1.5} />
                   <span>{cust.daysOverdue}</span>
                 </div>
 
                 <button
                   onClick={() => handleSendReminder(cust.id)}
                   disabled={sentReminders[cust.id]}
-                  className="btn-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#E4E2DD] text-[#1D2925] hover:bg-[#F8F6F1] hover:text-[#173F35] disabled:opacity-60 transition-colors text-xs font-medium shadow-xs whitespace-nowrap"
+                  className="btn-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#F4F4F5] border border-[#E5E5E5] text-[#18181B] hover:bg-[#E8EAED] active:bg-[#E5E5E5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-60 transition-all text-xs font-medium shadow-xs whitespace-nowrap"
                   type="button"
                 >
-                  <Send className="w-3.5 h-3.5 text-[#718078] group-hover:text-[#173F35]" />
+                  <Send className="w-3.5 h-3.5 text-[#71717A]" strokeWidth={1.5} />
                   <span>{sentReminders[cust.id] ? "Sent" : "Send Reminder"}</span>
                 </button>
               </div>
@@ -349,7 +351,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Card Footer */}
-        <div className="px-6 py-4 bg-[#F5F3EE] border-t border-[#E4E2DD] flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-[#718078] gap-2 font-normal">
+        <div className="px-6 py-3.5 bg-[#F4F4F5] border-t border-[#E5E5E5] flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-[#71717A] gap-2 font-normal">
           <span>
             Reminders are personalized automatically via SMS with guest preferred beverage notes.
           </span>
@@ -358,4 +360,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
