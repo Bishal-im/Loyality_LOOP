@@ -77,10 +77,9 @@ export const GoogleReviewModal: React.FC<GoogleReviewModalProps> = ({
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full"
               style={{ backgroundColor: "var(--c-gold-light)", border: "1px solid var(--c-banner-border)" }}
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path d="M6 7h12l-1.5 9H7.5L6 7Z" fill="rgba(217,164,65,0.4)" stroke="var(--c-gold)" strokeWidth="2" strokeLinejoin="round" />
-                <path d="M18 9h1.5a1.5 1.5 0 0 1 0 3H18" stroke="var(--c-gold)" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center">
+                <img src="/stamp-icon.svg" alt="Stamp" width="16" height="16" />
+              </div>
               <span className="text-[12px] font-bold" style={{ color: "var(--c-gold)" }}>
                 {currentStamps}
               </span>

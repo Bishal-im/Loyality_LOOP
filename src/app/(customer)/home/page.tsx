@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Bell, ChevronRight, Lock, PartyPopper, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BottomTabBar } from "@/components/customer/BottomTabBar";
 import { StampRequestModal } from "@/components/customer/StampRequestModal";
@@ -25,11 +26,9 @@ function StampDot({ filled, isFree, label }: { filled: boolean; isFree?: boolean
     return (
       <div className="w-[52px] h-[52px] rounded-full flex items-center justify-center"
         style={{ backgroundColor: "var(--c-gold)", boxShadow: "0 2px 10px rgba(217,164,65,0.45)" }}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M6 7h12l-1.5 9H7.5L6 7Z" fill="rgba(255,255,255,0.25)" stroke="white" strokeWidth="1.5" strokeLinejoin="round" />
-          <path d="M18 9h1.5a1.5 1.5 0 0 1 0 3H18" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M5 17h14" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
+        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+          <Image src="/stamp-icon.svg" alt="Stamp" width={28} height={28} />
+        </div>
       </div>
     );
   }
@@ -163,7 +162,6 @@ export default function HomePage() {
             </span>
           </div>
           <div className="flex items-center gap-1.5 mt-1">
-            <span className="text-base">🏪</span>
             <p className="text-[12px]" style={{ color: "var(--c-text-secondary)" }}>
               Welcome to ABC Café • <span className="font-medium" style={{ color: "var(--c-text-primary)" }}>Downtown Roastery</span>
             </p>
@@ -243,11 +241,9 @@ export default function HomePage() {
           onMouseEnter={e => (e.currentTarget.style.backgroundColor = "var(--c-terracotta-deep)")}
           onMouseLeave={e => (e.currentTarget.style.backgroundColor = "var(--c-terracotta)")}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="14" width="18" height="3" rx="1.5" fill="white" opacity="0.9" />
-            <path d="M6 14V9a6 6 0 0 1 12 0v5" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
-            <circle cx="12" cy="9" r="2.5" fill="white" opacity="0.7" />
-          </svg>
+          <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+            <Image src="/stamp-icon.svg" alt="Stamp" width={24} height={24} />
+          </div>
           Request Stamp
         </button>
 

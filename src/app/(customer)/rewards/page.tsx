@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Bell, Calendar, Lock, Star, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BottomTabBar } from "@/components/customer/BottomTabBar";
 import { useCustomer, CustomerReward } from "@/lib/customer-store";
@@ -31,16 +32,15 @@ function StampRow({ current, total }: { current: number; total: number }) {
         const filled = i < current;
         const isNext = i === current;
         return (
-          <div key={i} className="w-7 h-7 rounded-full flex items-center justify-center"
+          <div key={i} className="w-8 h-8 rounded-full flex items-center justify-center"
             style={{
               backgroundColor: filled ? "var(--c-gold)" : "var(--c-gold-light)",
               border: isNext ? "2px dashed var(--c-gold)" : filled ? "none" : "1px solid var(--c-border)",
             }}>
             {filled && (
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path d="M6 7h12l-1.5 9H7.5L6 7Z" fill="rgba(255,255,255,0.35)" stroke="white" strokeWidth="1.8" strokeLinejoin="round" />
-                <path d="M18 9h1.5a1.5 1.5 0 0 1 0 3H18" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
-              </svg>
+              <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center shadow-sm">
+                <Image src="/stamp-icon.svg" alt="Stamp" width={16} height={16} />
+              </div>
             )}
           </div>
         );
@@ -85,11 +85,9 @@ function UnlockedCard({ reward }: { reward: CustomerReward }) {
           onMouseEnter={e => (e.currentTarget.style.backgroundColor = "var(--c-terracotta-deep)")}
           onMouseLeave={e => (e.currentTarget.style.backgroundColor = "var(--c-terracotta)")}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="14" width="18" height="3" rx="1.5" fill="white" opacity="0.8" />
-            <path d="M6 14V9a6 6 0 0 1 12 0v5" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
-            <circle cx="12" cy="9" r="2.5" fill="white" opacity="0.6" />
-          </svg>
+          <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+            <Image src="/stamp-icon.svg" alt="Stamp" width={18} height={18} />
+          </div>
           Redeem Reward Now
         </button>
       </div>
@@ -244,10 +242,8 @@ export default function RewardsPage() {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 rounded-xl px-3 py-2 flex-1 border"
             style={{ backgroundColor: "var(--c-surface)", borderColor: "var(--c-border)" }}>
-            <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: "var(--c-gold)" }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                <path d="M6 7h12l-1.5 9H7.5L6 7Z" fill="rgba(255,255,255,0.3)" stroke="white" strokeWidth="2" strokeLinejoin="round" />
-              </svg>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-white">
+              <Image src="/stamp-icon.svg" alt="Stamp" width={20} height={20} />
             </div>
             <div>
               <p className="text-[12px] font-bold" style={{ color: "var(--c-text-primary)" }}>{state.currentStamps} Stamps Active</p>
