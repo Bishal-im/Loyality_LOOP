@@ -38,29 +38,30 @@ export default function RootHomePage() {
           className="text-xs max-w-md mx-auto mb-8"
           style={{ color: "var(--c-text-secondary)" }}
         >
-          Pixel-accurate frontend implementation based on Stitch design specifications. Select an entry point below:
+          Explore LoyalLoop's customer loyalty platform. Choose a preview:
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Admin App Card */}
           <Link
             href="/admin/dashboard"
-            className="p-6 rounded-2xl border transition-all group flex flex-col items-center text-center"
+            aria-label="Preview admin portal"
+            className="p-6 rounded-2xl border transition-all group flex flex-col items-center text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             style={{
               backgroundColor: "var(--c-bg)",
               borderColor: "var(--c-border)",
             }}
-            onMouseEnter={e => {
+            onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "rgba(201,111,74,0.05)";
               e.currentTarget.style.borderColor = "var(--c-terracotta)";
             }}
-            onMouseLeave={e => {
+            onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = "var(--c-bg)";
               e.currentTarget.style.borderColor = "var(--c-border)";
             }}
           >
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-transform"
+              className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-105"
               style={{
                 backgroundColor: "var(--c-surface)",
                 color: "var(--c-terracotta)",
@@ -83,22 +84,23 @@ export default function RootHomePage() {
           {/* Customer PWA Card */}
           <Link
             href="/register"
-            className="p-6 rounded-2xl border transition-all group flex flex-col items-center text-center"
+            aria-label="Preview customer mobile app"
+            className="p-6 rounded-2xl border transition-all group flex flex-col items-center text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             style={{
               backgroundColor: "var(--c-bg)",
               borderColor: "var(--c-border)",
             }}
-            onMouseEnter={e => {
+            onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "rgba(201,111,74,0.05)";
               e.currentTarget.style.borderColor = "var(--c-terracotta)";
             }}
-            onMouseLeave={e => {
+            onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = "var(--c-bg)";
               e.currentTarget.style.borderColor = "var(--c-border)";
             }}
           >
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-transform"
+              className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-105"
               style={{
                 backgroundColor: "var(--c-surface)",
                 color: "var(--c-terracotta)",
@@ -118,6 +120,10 @@ export default function RootHomePage() {
             </p>
           </Link>
         </div>
+
+        <p className="text-[10px] mt-6" style={{ color: "var(--c-text-muted)" }}>
+          Frontend prototype — no backend connected
+        </p>
       </div>
     </div>
   );

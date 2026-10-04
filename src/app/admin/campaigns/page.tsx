@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { Plus, X, ChevronDown, Mail } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Plus, X, ChevronDown, Mail, AlertCircle } from "lucide-react";
+import { DemoIndicator } from "@/components/admin/DemoIndicator";
 
 type FilterSegment = "all" | "new" | "regular" | "at-risk" | "inactive";
 type SegmentId = "new" | "regular" | "at-risk" | "inactive";
@@ -22,14 +23,15 @@ interface CampaignItem {
 
 export default function AdminCampaignsPage() {
   const [activeTab, setActiveTab] = useState<FilterSegment>("all");
-  const [composerOpen, setComposerOpen] = useState<boolean>(true);
+  const [composerOpen, setComposerOpen] = useState<boolean>(false); // Default closed
   const [activeSegmentId, setActiveSegmentId] = useState<SegmentId>("at-risk");
-  const [campaignName, setCampaignName] = useState("October Win-Back Special");
+  const [campaignName, setCampaignName] = useState("");
   const [emailTemplate, setEmailTemplate] = useState("win-back");
-  const [subjectLine, setSubjectLine] = useState("We miss you at ABC Café!");
-  const [messageBody, setMessageBody] = useState(
-    "Hi {{customer_name}},\n\nIt's been a while since your last visit to {{business_name}}! We'd love to see you again soon. Come by this week and enjoy your favorite coffee and treats on us."
-  );
+  const [subjectLine, setSubjectLine] = useState("");
+  const [messageBody, setMessageBody] = useState("");
+  const [isDirty, setIsDirty] = useState(false);
+  const [showConfirmSend, setShowConfirmSend] = useState(false);
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
 
   const [campaigns, setCampaigns] = useState<CampaignItem[]>([
     {
@@ -39,7 +41,7 @@ export default function AdminCampaignsPage() {
       segmentName: "At Risk Customers",
       leftBarColor: "bg-[#C5221F]",
       status: "Draft",
-      date: "Created Sep 18, 2024",
+      date: "Created Oct 18, 2024",
       isDraft: true,
     },
     {
@@ -49,7 +51,7 @@ export default function AdminCampaignsPage() {
       segmentName: "At Risk Customers",
       leftBarColor: "bg-[#C5221F]",
       status: "Sent",
-      date: "Sent Sep 15, 2024",
+      date: "Sent Nov 15, 2024",
       sentCount: 312,
       openedRate: "58%",
       returnedRate: "19%",
@@ -61,7 +63,7 @@ export default function AdminCampaignsPage() {
       segmentName: "New Customers",
       leftBarColor: "bg-[#1A73E8]",
       status: "Sent",
-      date: "Sent Sep 10, 2024",
+      date: "Sent Nov 10, 2024",
       sentCount: 120,
       openedRate: "64%",
       returnedRate: "38%",
@@ -73,7 +75,7 @@ export default function AdminCampaignsPage() {
       segmentName: "Regular Customers",
       leftBarColor: "bg-[#137333]",
       status: "Sent",
-      date: "Sent Sep 1, 2024",
+      date: "Sent Nov 1, 2024",
       sentCount: 892,
       openedRate: "55%",
       returnedRate: "11%",
@@ -85,16 +87,36 @@ export default function AdminCampaignsPage() {
       segmentName: "Inactive Customers",
       leftBarColor: "bg-[#71717A]",
       status: "Sent",
-      date: "Sent Aug 20, 2024",
+      date: "Sent Oct 20, 2024",
       sentCount: 27,
       openedRate: "41%",
       returnedRate: "15%",
     },
   ]);
 
+  // Escape key handler
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && composerOpen) {
+        handleCloseAttempt();
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [composerOpen, isDirty]);
+
+  // Track dirty state
+  useEffect(() => {
+    if (composerOpen && (campaignName || subjectLine || messageBody)) {
+      setIsDirty(true);
+    }
+  }, [campaignName, subjectLine, messageBody, composerOpen]);
+
   const handleOpenComposer = (segmentId: SegmentId = "at-risk") => {
     setActiveSegmentId(segmentId);
-    setComposerOpen(true);
+    setIsDirty(false);
+    
+    // Set defaults based on segment
     if (segmentId === "at-risk") {
       setCampaignName("October Win-Back Special");
       setEmailTemplate("win-back");
@@ -124,6 +146,22 @@ export default function AdminCampaignsPage() {
         "Hi {{customer_name}},\n\nWe haven't seen you in a while at {{business_name}}! Here is a NPR 500 voucher on us for your next visit."
       );
     }
+    
+    setComposerOpen(true);
+  };
+
+  const handleCloseAttempt = () => {
+    if (isDirty) {
+      setShowCloseConfirm(true);
+    } else {
+      setComposerOpen(false);
+    }
+  };
+
+  const handleCloseConfirmed = () => {
+    setComposerOpen(false);
+    setShowCloseConfirm(false);
+    setIsDirty(false);
   };
 
   const handleSegmentChange = (segmentId: SegmentId) => {
@@ -181,7 +219,7 @@ export default function AdminCampaignsPage() {
     }
   };
 
-  const handleSendCampaign = () => {
+  const confirmSendCampaign = () => {
     const newCamp: CampaignItem = {
       id: `camp_${Date.now()}`,
       name: campaignName || "New Targeted Campaign",
@@ -211,6 +249,8 @@ export default function AdminCampaignsPage() {
 
     setCampaigns((prev) => [newCamp, ...prev]);
     setComposerOpen(false);
+    setShowConfirmSend(false);
+    setIsDirty(false);
   };
 
   const handleSaveDraft = () => {
@@ -234,6 +274,9 @@ export default function AdminCampaignsPage() {
 
     setCampaigns((prev) => [newDraft, ...prev]);
     setComposerOpen(false);
+    setIsDirty(false);
+    // Show brief feedback
+    alert("Draft saved locally (demo only — not persisted to server)");
   };
 
   const filteredCampaigns = campaigns.filter((camp) => {
@@ -241,157 +284,171 @@ export default function AdminCampaignsPage() {
     return camp.segmentId === activeTab;
   });
 
+  const currentSegmentCount =
+    activeSegmentId === "new"
+      ? 120
+      : activeSegmentId === "regular"
+      ? 892
+      : activeSegmentId === "at-risk"
+      ? 312
+      : 27;
+
   return (
-    <div className="flex flex-col w-full max-w-[1000px] mx-auto gap-6 pb-12">
-      {/* 1. Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex flex-col">
-          <h1 className="text-[24px] font-semibold text-[#18181B] tracking-tight leading-tight">
-            Campaigns
-          </h1>
-          <p className="text-[14px] font-normal text-[#71717A] mt-0.5">
-            Send targeted emails to your customers
-          </p>
-        </div>
-
-        {/* Header Action Button — Single plus icon, no duplicate plus symbol */}
-        <button
-          onClick={() =>
-            handleOpenComposer(
-              activeTab !== "all" ? (activeTab as SegmentId) : "at-risk"
-            )
-          }
-          className="btn-press inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold shadow-xs transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-          type="button"
-        >
-          <Plus className="w-4 h-4" strokeWidth={2} />
-          <span>New Campaign</span>
-        </button>
-      </div>
-
-      {/* 2. Filter Tab Row (Same filter pill style as Customers page) */}
-      <div className="flex items-center justify-between gap-4 border-b border-[#E5E5E5] pb-4">
-        <div className="inline-flex items-center p-1 bg-[#F4F4F5] rounded-xl border border-[#E5E5E5] gap-1 overflow-x-auto max-w-full">
-          {[
-            { id: "all", label: "All" },
-            { id: "new", label: "New (120)" },
-            { id: "regular", label: "Regular (892)" },
-            { id: "at-risk", label: "At Risk (312)" },
-            { id: "inactive", label: "Inactive (27)" },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as FilterSegment)}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
-                activeTab === tab.id
-                  ? "bg-[#18181B] text-white font-semibold shadow-xs"
-                  : "text-[#71717A] hover:text-[#18181B] hover:bg-[#E8EAED]"
-              }`}
-              type="button"
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
-        <span className="text-xs text-[#71717A] font-normal hidden sm:inline-block">
-          Showing {filteredCampaigns.length}{" "}
-          {filteredCampaigns.length === 1 ? "campaign" : "campaigns"}
-        </span>
-      </div>
-
-      {/* 3. Filtered Vertical Campaign List */}
-      <div className="flex flex-col gap-3.5">
-        {filteredCampaigns.length > 0 ? (
-          filteredCampaigns.map((camp) => (
-            <div
-              key={camp.id}
-              className="bg-white rounded-[16px] border border-[#E5E5E5] p-5 pl-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all flex flex-col gap-3 relative overflow-hidden"
-            >
-              {/* Colored 4px Left-Edge Bar */}
-              <div
-                className={`absolute left-0 top-0 bottom-0 w-[4px] ${camp.leftBarColor}`}
-              />
-
-              {/* Title, Target Segment, & Status Pill */}
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-[15px] font-semibold text-[#18181B] leading-snug">
-                    {camp.name}
-                  </h3>
-                  <span className="text-xs text-[#71717A] font-normal">
-                    Targeted:{" "}
-                    <span className="font-medium text-[#3F3F46]">
-                      {camp.segmentName}
-                    </span>
-                  </span>
-                </div>
-
-                {camp.status === "Sent" ? (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#E6F4EA] text-[#137333] shrink-0">
-                    Sent
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#F4F4F5] text-[#71717A] border border-[#E5E5E5] shrink-0">
-                    Draft
-                  </span>
-                )}
-              </div>
-
-              {/* Stats Line (if Sent) — plain inline text */}
-              {camp.status === "Sent" ? (
-                <div className="text-xs text-[#71717A] font-normal">
-                  <span className="tabular-nums font-semibold text-[#18181B]">
-                    {camp.sentCount}
-                  </span>{" "}
-                  sent ·{" "}
-                  <span className="tabular-nums font-semibold text-[#18181B]">
-                    {camp.openedRate}
-                  </span>{" "}
-                  opened ·{" "}
-                  <span className="tabular-nums font-semibold text-[#18181B]">
-                    {camp.returnedRate}
-                  </span>{" "}
-                  returned
-                </div>
-              ) : (
-                <div className="text-xs text-[#71717A] font-normal flex items-center justify-between">
-                  <span>Not sent · Ready to schedule</span>
-                  <button
-                    onClick={() => handleOpenComposer(camp.segmentId)}
-                    className="font-semibold text-primary hover:underline"
-                    type="button"
-                  >
-                    Edit Draft &rarr;
-                  </button>
-                </div>
-              )}
-
-              {/* Footer Date */}
-              <div className="text-xs text-[#A1A1AA] font-normal border-t border-[#F4F4F5] pt-2.5">
-                {camp.date}
-              </div>
+    <>
+      <div className="flex flex-col w-full max-w-[1000px] mx-auto gap-6 pb-12">
+        {/* 1. Page Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-3">
+              <h1 className="text-[24px] font-semibold text-[#18181B] tracking-tight leading-tight">
+                Campaigns
+              </h1>
+              <DemoIndicator />
             </div>
-          ))
-        ) : (
-          <div className="bg-white rounded-[16px] border border-dashed border-[#E5E5E5] p-8 flex flex-col items-center justify-center text-center gap-2">
-            <Mail className="w-6 h-6 text-[#A1A1AA]" strokeWidth={1.5} />
-            <span className="text-xs font-semibold text-[#18181B]">
-              No campaigns found for this segment
-            </span>
-            <button
-              onClick={() =>
-                handleOpenComposer(
-                  activeTab !== "all" ? (activeTab as SegmentId) : "at-risk"
-                )
-              }
-              className="text-xs font-semibold text-primary hover:underline mt-1"
-              type="button"
-            >
-              + Create a new campaign
-            </button>
+            <p className="text-[14px] font-normal text-[#71717A] mt-0.5">
+              Send targeted emails to your customers
+            </p>
           </div>
-        )}
+
+          {/* Header Action Button */}
+          <button
+            onClick={() =>
+              handleOpenComposer(
+                activeTab !== "all" ? (activeTab as SegmentId) : "at-risk"
+              )
+            }
+            className="btn-press inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-semibold shadow-xs transition-colors self-start sm:self-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            type="button"
+          >
+            <Plus className="w-4 h-4" strokeWidth={2} />
+            <span>New Campaign</span>
+          </button>
+        </div>
+
+        {/* 2. Filter Tab Row */}
+        <div className="flex items-center justify-between gap-4 border-b border-[#E5E5E5] pb-4">
+          <div className="inline-flex items-center p-1 bg-[#F4F4F5] rounded-xl border border-[#E5E5E5] gap-1 overflow-x-auto max-w-full">
+            {[
+              { id: "all", label: "All" },
+              { id: "new", label: "New (120)" },
+              { id: "regular", label: "Regular (892)" },
+              { id: "at-risk", label: "At Risk (312)" },
+              { id: "inactive", label: "Inactive (27)" },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as FilterSegment)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 ${
+                  activeTab === tab.id
+                    ? "bg-[#18181B] text-white font-semibold shadow-xs"
+                    : "text-[#71717A] hover:text-[#18181B] hover:bg-[#E8EAED]"
+                }`}
+                type="button"
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-xs text-[#71717A] font-normal hidden sm:inline-block">
+            Showing {filteredCampaigns.length}{" "}
+            {filteredCampaigns.length === 1 ? "campaign" : "campaigns"}
+          </span>
+        </div>
+
+        {/* 3. Filtered Vertical Campaign List */}
+        <div className="flex flex-col gap-3.5">
+          {filteredCampaigns.length > 0 ? (
+            filteredCampaigns.map((camp) => (
+              <div
+                key={camp.id}
+                className="bg-white rounded-[16px] border border-[#E5E5E5] p-5 pl-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all flex flex-col gap-3 relative overflow-hidden"
+              >
+                {/* Colored 4px Left-Edge Bar */}
+                <div
+                  className={`absolute left-0 top-0 bottom-0 w-[4px] ${camp.leftBarColor}`}
+                />
+
+                {/* Title, Target Segment, & Status Pill */}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[15px] font-semibold text-[#18181B] leading-snug">
+                      {camp.name}
+                    </h3>
+                    <span className="text-xs text-[#71717A] font-normal">
+                      Targeted:{" "}
+                      <span className="font-medium text-[#3F3F46]">
+                        {camp.segmentName}
+                      </span>
+                    </span>
+                  </div>
+
+                  {camp.status === "Sent" ? (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#E6F4EA] text-[#137333] shrink-0">
+                      Sent
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#F4F4F5] text-[#71717A] border border-[#E5E5E5] shrink-0">
+                      Draft
+                    </span>
+                  )}
+                </div>
+
+                {/* Stats Line (if Sent) */}
+                {camp.status === "Sent" ? (
+                  <div className="text-xs text-[#71717A] font-normal">
+                    <span className="tabular-nums font-semibold text-[#18181B]">
+                      {camp.sentCount}
+                    </span>{" "}
+                    sent ·{" "}
+                    <span className="tabular-nums font-semibold text-[#18181B]">
+                      {camp.openedRate}
+                    </span>{" "}
+                    opened ·{" "}
+                    <span className="tabular-nums font-semibold text-[#18181B]">
+                      {camp.returnedRate}
+                    </span>{" "}
+                    returned
+                  </div>
+                ) : (
+                  <div className="text-xs text-[#71717A] font-normal flex items-center justify-between">
+                    <span>Not sent · Ready to schedule</span>
+                    <button
+                      onClick={() => handleOpenComposer(camp.segmentId)}
+                      className="btn-press font-semibold text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded px-1"
+                      type="button"
+                    >
+                      Edit Draft &rarr;
+                    </button>
+                  </div>
+                )}
+
+                {/* Footer Date */}
+                <div className="text-xs text-[#A1A1AA] font-normal border-t border-[#F4F4F5] pt-2.5">
+                  {camp.date}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white rounded-[16px] border border-dashed border-[#E5E5E5] p-8 flex flex-col items-center justify-center text-center gap-2">
+              <Mail className="w-6 h-6 text-[#A1A1AA]" strokeWidth={1.5} />
+              <span className="text-xs font-semibold text-[#18181B]">
+                No campaigns found for this segment
+              </span>
+              <button
+                onClick={() =>
+                  handleOpenComposer(
+                    activeTab !== "all" ? (activeTab as SegmentId) : "at-risk"
+                  )
+                }
+                className="btn-press text-xs font-semibold text-primary hover:underline mt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 rounded px-2 py-1"
+                type="button"
+              >
+                + Create a new campaign
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* 4. Slide-Over Composer Panel */}
@@ -399,17 +456,17 @@ export default function AdminCampaignsPage() {
         <div className="fixed inset-0 z-50 overflow-hidden">
           {/* Semi-transparent dark backdrop */}
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-[1px] transition-opacity"
-            onClick={() => setComposerOpen(false)}
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+            onClick={handleCloseAttempt}
           />
 
-          <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+          <div className="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
             <div className="w-screen max-w-[520px] bg-white shadow-2xl flex flex-col h-full border-l border-[#E5E5E5] relative z-10">
               {/* Panel Header */}
               <div className="px-6 py-5 border-b border-[#E5E5E5] flex items-center justify-between bg-white shrink-0">
                 <div>
                   <h2 className="text-[18px] font-semibold text-[#18181B]">
-                    New Campaign
+                    New Email Campaign
                   </h2>
                   <p className="text-xs text-[#71717A] mt-0.5 font-normal">
                     Targeting:{" "}
@@ -419,8 +476,8 @@ export default function AdminCampaignsPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() => setComposerOpen(false)}
-                  className="w-8 h-8 rounded-lg border border-[#E5E5E5] text-[#71717A] hover:text-[#18181B] hover:bg-[#F4F4F5] flex items-center justify-center transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  onClick={handleCloseAttempt}
+                  className="btn-press w-8 h-8 rounded-lg border border-[#E5E5E5] text-[#71717A] hover:text-[#18181B] hover:bg-[#F4F4F5] flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                   type="button"
                   aria-label="Close panel"
                 >
@@ -520,7 +577,7 @@ export default function AdminCampaignsPage() {
                         onClick={() =>
                           setMessageBody((prev) => prev + " {{customer_name}}")
                         }
-                        className="px-2 py-1 rounded bg-[#F4F4F5] border border-[#E5E5E5] text-[10px] text-[#71717A] hover:text-[#18181B] transition-colors"
+                        className="btn-press px-2 py-1 rounded bg-[#F4F4F5] border border-[#E5E5E5] text-[10px] text-[#71717A] hover:text-[#18181B] transition-colors"
                       >
                         + Name Tag
                       </button>
@@ -529,7 +586,7 @@ export default function AdminCampaignsPage() {
                         onClick={() =>
                           setMessageBody((prev) => prev + " {{business_name}}")
                         }
-                        className="px-2 py-1 rounded bg-[#F4F4F5] border border-[#E5E5E5] text-[10px] text-[#71717A] hover:text-[#18181B] transition-colors"
+                        className="btn-press px-2 py-1 rounded bg-[#F4F4F5] border border-[#E5E5E5] text-[10px] text-[#71717A] hover:text-[#18181B] transition-colors"
                       >
                         + Business Tag
                       </button>
@@ -570,11 +627,11 @@ export default function AdminCampaignsPage() {
               {/* Sticky Panel Footer */}
               <div className="p-5 bg-white border-t border-[#E5E5E5] flex items-center gap-3 sticky bottom-0 z-10 shrink-0">
                 <button
-                  onClick={handleSendCampaign}
+                  onClick={() => setShowConfirmSend(true)}
                   className="btn-press flex-1 py-3 rounded-xl bg-primary hover:bg-primary-hover active:bg-primary-hover text-white text-xs font-semibold shadow-xs transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   type="button"
                 >
-                  <span>Send Campaign</span>
+                  <span>Send Email Campaign</span>
                 </button>
                 <button
                   onClick={handleSaveDraft}
@@ -588,6 +645,110 @@ export default function AdminCampaignsPage() {
           </div>
         </div>
       )}
-    </div>
+
+      {/* Send Campaign Confirmation Modal */}
+      {showConfirmSend && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[80] backdrop-blur-sm"
+            onClick={() => setShowConfirmSend(false)}
+          />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[440px] mx-4 bg-white rounded-2xl shadow-2xl border border-[#E5E5E5] z-[90] overflow-hidden">
+            <div className="p-6 border-b border-[#E5E5E5] flex items-center justify-between">
+              <h3 className="text-[16px] font-semibold text-[#18181B]">
+                Send Email Campaign — Demo Preview
+              </h3>
+              <button
+                onClick={() => setShowConfirmSend(false)}
+                className="btn-press p-1.5 rounded-lg hover:bg-[#F4F4F5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                aria-label="Close modal"
+              >
+                <X className="w-4 h-4 text-[#71717A]" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="p-4 rounded-xl bg-[#FFF4E8] border border-[#F2D9B0]">
+                <div className="flex items-start gap-2">
+                  <AlertCircle className="w-5 h-5 text-[#7A4F1E] mt-0.5 shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-[#7A4F1E]">
+                      Frontend Prototype Only
+                    </p>
+                    <p className="text-xs text-[#7A4F1E] mt-1 leading-relaxed">
+                      This is a disconnected demo. No actual emails will be sent.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-sm text-[#18181B]">
+                  In production, this would send emails to:
+                </p>
+                <div className="p-4 rounded-xl bg-[#F4F4F5] border border-[#E5E5E5]">
+                  <p className="text-sm font-semibold text-[#18181B] mb-2">
+                    {currentSegmentCount} customers
+                  </p>
+                  <div className="text-xs text-[#71717A] leading-relaxed">
+                    Subject: <span className="font-medium text-[#18181B]">{subjectLine}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 bg-[#F4F4F5] border-t border-[#E5E5E5] flex gap-3">
+              <button
+                onClick={() => setShowConfirmSend(false)}
+                className="btn-press flex-1 px-4 py-2.5 rounded-xl bg-white border border-[#E5E5E5] text-[#18181B] hover:bg-[#E8EAED] font-medium text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmSendCampaign}
+                className="btn-press flex-1 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                Mark as Sent (Demo)
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Close Confirmation Modal (if dirty) */}
+      {showCloseConfirm && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-[80] backdrop-blur-sm"
+            onClick={() => setShowCloseConfirm(false)}
+          />
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] mx-4 bg-white rounded-2xl shadow-2xl border border-[#E5E5E5] z-[90] overflow-hidden">
+            <div className="p-6 border-b border-[#E5E5E5]">
+              <h3 className="text-[16px] font-semibold text-[#18181B]">
+                Discard unsaved changes?
+              </h3>
+              <p className="text-sm text-[#71717A] mt-2">
+                Your campaign draft has not been saved. This action cannot be undone.
+              </p>
+            </div>
+            
+            <div className="p-6 bg-[#F4F4F5] flex gap-3">
+              <button
+                onClick={() => setShowCloseConfirm(false)}
+                className="btn-press flex-1 px-4 py-2.5 rounded-xl bg-white border border-[#E5E5E5] text-[#18181B] hover:bg-[#E8EAED] font-medium text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                Keep Editing
+              </button>
+              <button
+                onClick={handleCloseConfirmed}
+                className="btn-press flex-1 px-4 py-2.5 rounded-xl bg-[#C5221F] hover:bg-[#A01813] text-white font-semibold text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5221F] focus-visible:ring-offset-2"
+              >
+                Discard
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }

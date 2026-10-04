@@ -17,6 +17,7 @@ import {
   UploadCloud,
   Pencil,
 } from "lucide-react";
+import { DemoIndicator } from "@/components/admin/DemoIndicator";
 
 export interface RewardItem {
   id: string;
@@ -87,7 +88,7 @@ const INITIAL_REWARDS: RewardItem[] = [
     status: "Active",
     customerPool: "31 eligible",
     avgDaysToClaim: "38.5 d",
-    imgUrl: "https://images.unsplash.com/photo-1556742049-0a67568d0d9f?auto=format&fit=crop&w=300&q=80",
+    imgUrl: "https://images.unsplash.com/photo-1607863680198-23d4b2565df0?auto=format&fit=crop&w=300&q=80",
     availability: "60 days after unlock",
   },
 ];
@@ -132,7 +133,7 @@ function getRingStyle(
   }
 }
 
-/** Circular photo thumbnail with category-icon fallback */
+/** Circular photo thumbnail with branded gradient fallback */
 function NodeImage({
   src,
   category,
@@ -144,10 +145,30 @@ function NodeImage({
 }) {
   const [err, setErr] = useState(false);
   const { icon: Icon } = CATEGORY_META[category];
+  
+  // Category-specific gradient backgrounds for fallback
+  const gradientMap: Record<RewardItem["category"], string> = {
+    food: "linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%)",
+    voucher: "linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%)",
+    beverage: "linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)",
+    special: "linear-gradient(135deg, #FDF4FF 0%, #FAE8FF 100%)",
+  };
+  
+  const iconColorMap: Record<RewardItem["category"], string> = {
+    food: "#EA580C",
+    voucher: "#4F46E5",
+    beverage: "#16A34A",
+    special: "#A855F7",
+  };
+  
   return (
     <div
-      className="rounded-full overflow-hidden bg-[#F4F4F5] flex items-center justify-center shrink-0"
-      style={{ width: size, height: size }}
+      className="rounded-full overflow-hidden flex items-center justify-center shrink-0"
+      style={{ 
+        width: size, 
+        height: size,
+        background: (!err && src) ? "#F4F4F5" : gradientMap[category],
+      }}
     >
       {!err && src ? (
         <img
@@ -157,7 +178,11 @@ function NodeImage({
           className="w-full h-full object-cover"
         />
       ) : (
-        <Icon className="w-6 h-6 text-[#71717A]" strokeWidth={1.5} />
+        <Icon 
+          className="w-6 h-6" 
+          strokeWidth={1.5}
+          style={{ color: iconColorMap[category] }}
+        />
       )}
     </div>
   );
@@ -210,7 +235,7 @@ export default function AdminRewardsPage() {
       const newId = `RWD-${800 + rewards.length}`;
       setRewards((prev) => [...prev, {
         id: newId, title: formName, category: formCategory, reqVisits: formVisits,
-        desc: formDesc || "Customer milestone reward", redemptionRate: 0, redeemedMonth: 0,
+        desc: formDesc || "Customer milestone unlock", redemptionRate: 0, redeemedMonth: 0,
         status: formIsActive ? "Active" : "Inactive", customerPool: "New threshold",
         avgDaysToClaim: "0 d", imgUrl: formImgUrl, availability: formAvailability,
       }]);
@@ -224,7 +249,7 @@ export default function AdminRewardsPage() {
   };
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Remove "${name}" from the reward path?`)) {
+    if (confirm(`Remove "${name}" from the milestone path?`)) {
       setRewards((prev) => prev.filter((r) => r.id !== id));
       closeEditor();
     }
@@ -242,6 +267,7 @@ export default function AdminRewardsPage() {
             <h1 className="text-[24px] font-semibold text-[#18181B] tracking-tight leading-tight">
               Reward Path
             </h1>
+            <DemoIndicator />
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#E6F4EA] text-[#137333] text-[11px] font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-[#137333] animate-pulse" />
               Ladder Active
@@ -276,7 +302,7 @@ export default function AdminRewardsPage() {
           </div>
 
           {/* ── Path nodes with connecting line ── */}
-          <div className="relative">
+          <div className="relative overflow-x-auto pb-4 -mx-2 px-2 sm:mx-0 sm:px-0">
             {/*
               Connecting track: gradient grey line with tick-mark dots at
               each inter-node midpoint. SVG drawn absolutely behind nodes.
@@ -287,7 +313,7 @@ export default function AdminRewardsPage() {
               z-0 keeps it behind z-10 nodes so circles sit "on top of" the line.
             */}
             <div
-              className="absolute z-0 overflow-visible"
+              className="absolute z-0 overflow-visible hidden sm:block"
               style={{
                 top: "68px",
                 left: "44px",
@@ -312,8 +338,7 @@ export default function AdminRewardsPage() {
             </div>
 
             {/* Nodes */}
-            <div className="relative z-10 flex items-start gap-2">
-              {sortedRewards.map((reward) => {
+            <div className="relative z-10 flex items-start gap-2 min-w-min">{sortedRewards.map((reward) => {
                 const isExpanded = expandedId === reward.id && !isCreating;
                 const isActive = reward.status === "Active";
                 const isOtherExpanded = expandedId !== null && expandedId !== reward.id;
@@ -434,9 +459,9 @@ export default function AdminRewardsPage() {
 
                 <div className="flex flex-col items-center text-center mt-3 px-1">
                   <span className="text-[13px] font-semibold text-[#71717A] group-hover:text-[#52525B] leading-snug transition-colors">
-                    Add Reward
+                    Add Milestone
                   </span>
-                  <span className="text-[11px] text-[#A1A1AA] font-normal mt-0.5">Create milestone</span>
+                  <span className="text-[11px] text-[#A1A1AA] font-normal mt-0.5">Create new</span>
                 </div>
 
                 {expandedId === "NEW" && isCreating && (
@@ -518,7 +543,7 @@ export default function AdminRewardsPage() {
                       {isCreating ? "Creating new milestone" : `Editing · ${currentReward?.id}`}
                     </span>
                     <h3 className="text-[16px] font-semibold text-[#18181B] leading-tight">
-                      {isCreating ? "Configure New Reward Milestone" : `Editing: ${currentReward?.title}`}
+                      {isCreating ? "Configure New Milestone" : `Editing: ${currentReward?.title}`}
                     </h3>
                   </div>
                 </div>
@@ -544,12 +569,12 @@ export default function AdminRewardsPage() {
               </div>
 
               {/* Form body */}
-              <div className="grid grid-cols-12 gap-8">
+              <div className="grid grid-cols-12 gap-6 sm:gap-8">
                 {/* LEFT: Primary fields */}
                 <div className="col-span-12 lg:col-span-5 flex flex-col gap-5">
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-medium text-[#71717A] uppercase tracking-[0.07em]">REWARD NAME *</label>
+                    <label className="text-[11px] font-medium text-[#71717A] uppercase tracking-[0.07em]">MILESTONE NAME *</label>
                     <input
                       required type="text" placeholder="e.g. Free Veg Momo"
                       value={formName} onChange={(e) => setFormName(e.target.value)}
